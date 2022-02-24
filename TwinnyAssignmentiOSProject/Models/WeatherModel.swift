@@ -33,6 +33,8 @@ struct WeatherModel: Codable {
             struct Items: Codable {
                 var item: [WeatherDataModel]
                 
+                //fb: 변수 선언 시 어노테이션이 WeatherModel.Response.Body.Items.WeatherDataModel로
+                //길어지기 때문에 WeatherDataModel는 따로 분리하는 것을 권장합니다.
                 struct WeatherDataModel: Codable {
                     var category: String
                     var fcstValue: String

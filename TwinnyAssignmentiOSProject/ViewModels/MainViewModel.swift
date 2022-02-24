@@ -43,6 +43,7 @@ class MainViewModel: NSObject {
                 tmp in
                 var temp = tmp.components(separatedBy: "\",\"")
                 if temp.count > 1 {
+                    //fb: temp[2]...가 어떤 값을 의미하는 지 알 수 없습니다.
                     locationData.append(["\(temp[2]) \(temp[3]) \(temp[4])",temp[2],temp[3],temp[4],temp[5],temp[6]])
                 }
             }

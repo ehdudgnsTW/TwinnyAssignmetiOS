@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var favoritesLocation: UITableView!
+    //fb: 나머지 전역변수를 viewModel에 포함하는 방향도 괜찮아보입니다.
     private let viewModel = MainViewModel()
     private var filteredArr: [String] = []
     private var currentTime: String = ""
@@ -39,6 +40,7 @@ class ViewController: UIViewController {
         return isActive && isSearchBarHasText
     }
     
+    //fb: whiltespace로 검색 시 '1단계 2단계 3단계'가 검색됩니다.
     private func setupSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "찾으시는 장소를 입력해주세요."
@@ -52,6 +54,7 @@ class ViewController: UIViewController {
         favoritesLocation.delegate = self
         favoritesLocation.dataSource = self
         if isFiltering {
+            //fb: viewDidLoad에 한 번만 호출되기 때문에 WeatherLocationDataCell 셀은 등록되지 않습니다.
             favoritesLocation.register(UINib(nibName: "WeatherLocationDataCell", bundle: nil), forCellReuseIdentifier: "WeatherLocationDataCell")
         }
         else {
@@ -68,6 +71,7 @@ extension ViewController: UITableViewDelegate {
 
 extension ViewController: UITableViewDataSource {
     
+    //fb: datasource와 delegate를 나누려 했다면, 이 메서드는 'extension ViewController: UITableViewDelegate { ... }'에 위치하는 것이 나아 보입니다.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         getTime()
         viewModel.getData(location: filteredArr[indexPath.row], baseTime: currentTime, baseDate: currentDate)
