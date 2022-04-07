@@ -9,45 +9,43 @@
 /* Begin PBXBuildFile section */
 		56DC3E2F27B2BAC00095E297 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC3E2E27B2BAC00095E297 /* AppDelegate.swift */; };
 		56DC3E3127B2BAC00095E297 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC3E3027B2BAC00095E297 /* SceneDelegate.swift */; };
-		56DC3E3327B2BAC00095E297 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC3E3227B2BAC00095E297 /* ViewController.swift */; };
-		56DC3E3627B2BAC00095E297 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E3427B2BAC00095E297 /* Main.storyboard */; };
 		56DC3E3927B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56DC3E3727B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld */; };
 		56DC3E3B27B2BAC10095E297 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E3A27B2BAC10095E297 /* Assets.xcassets */; };
 		56DC3E3E27B2BAC10095E297 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E3C27B2BAC10095E297 /* LaunchScreen.storyboard */; };
-		56DC3E4B27B2D0160095E297 /* WeatherLocationDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC3E4927B2D0160095E297 /* WeatherLocationDataCell.swift */; };
-		56DC3E4C27B2D0160095E297 /* WeatherLocationDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E4A27B2D0160095E297 /* WeatherLocationDataCell.xib */; };
-		56F3449F27B4AF62001D956D /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F3449E27B4AF62001D956D /* MainViewModel.swift */; };
-		56F344A227B794A7001D956D /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F344A127B794A7001D956D /* API.swift */; };
-		56F344A427B8C39C001D956D /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F344A327B8C39C001D956D /* WeatherModel.swift */; };
-		56F344A727B8C752001D956D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv in Resources */ = {isa = PBXBuildFile; fileRef = 56F344A627B8C752001D956D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */; };
-		56F344AA27BB6D52001D956D /* LoccationDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F344A827BB6D52001D956D /* LoccationDataCell.swift */; };
-		56F344AB27BB6D52001D956D /* LoccationDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56F344A927BB6D52001D956D /* LoccationDataCell.xib */; };
-		56F344AD27BB8949001D956D /* LocationDataDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56F344AC27BB8949001D956D /* LocationDataDetail.storyboard */; };
-		56F344AF27BB8963001D956D /* LocationDataDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F344AE27BB8963001D956D /* LocationDataDetailViewController.swift */; };
-		56F344B127BB8F18001D956D /* LocationDataDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F344B027BB8F18001D956D /* LocationDataDetailViewModel.swift */; };
+		BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */; };
+		BC5B7A7427FEACEE00953C7B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7327FEACEE00953C7B /* MainViewController.swift */; };
+		BC5B7A7627FEB07500953C7B /* LocationDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */; };
+		BC5B7A7827FEB29200953C7B /* TableViewCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7727FEB29200953C7B /* TableViewCellReactor.swift */; };
+		BC5B7A7A27FEBBDB00953C7B /* FavoriteDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7927FEBBDB00953C7B /* FavoriteDataModel.swift */; };
+		BC5B7A7C27FEC53800953C7B /* FavoriteDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7B27FEC53800953C7B /* FavoriteDataTableViewCell.swift */; };
+		BC5B7A7E27FEC5B900953C7B /* SizeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7D27FEC5B900953C7B /* SizeStyle.swift */; };
+		BC5B7A8027FED46400953C7B /* MainViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */; };
+		BC5B7A8227FED52D00953C7B /* FavoriteDetailDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A8127FED52D00953C7B /* FavoriteDetailDataViewController.swift */; };
+		BC5B7A8427FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */; };
+		EA13861F33DB503C68CED2D4 /* Pods_TwinnyAssignmentiOSProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 552A541D8AD0C413320C047F /* Pods_TwinnyAssignmentiOSProject.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		23DDE6E642E790B449B81C5D /* Pods-TwinnyAssignmentiOSProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwinnyAssignmentiOSProject.release.xcconfig"; path = "Target Support Files/Pods-TwinnyAssignmentiOSProject/Pods-TwinnyAssignmentiOSProject.release.xcconfig"; sourceTree = "<group>"; };
+		552A541D8AD0C413320C047F /* Pods_TwinnyAssignmentiOSProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwinnyAssignmentiOSProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56DC3E2B27B2BAC00095E297 /* TwinnyAssignmentiOSProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwinnyAssignmentiOSProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56DC3E2E27B2BAC00095E297 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56DC3E3027B2BAC00095E297 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		56DC3E3227B2BAC00095E297 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		56DC3E3527B2BAC00095E297 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		56DC3E3827B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TwinnyAssignmentiOSProject.xcdatamodel; sourceTree = "<group>"; };
 		56DC3E3A27B2BAC10095E297 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56DC3E3D27B2BAC10095E297 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56DC3E3F27B2BAC10095E297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		56DC3E4927B2D0160095E297 /* WeatherLocationDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherLocationDataCell.swift; sourceTree = "<group>"; };
-		56DC3E4A27B2D0160095E297 /* WeatherLocationDataCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherLocationDataCell.xib; sourceTree = "<group>"; };
-		56F3449E27B4AF62001D956D /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
-		56F344A127B794A7001D956D /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		56F344A327B8C39C001D956D /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
-		56F344A627B8C752001D956D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv"; sourceTree = "<group>"; };
-		56F344A827BB6D52001D956D /* LoccationDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoccationDataCell.swift; sourceTree = "<group>"; };
-		56F344A927BB6D52001D956D /* LoccationDataCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoccationDataCell.xib; sourceTree = "<group>"; };
-		56F344AC27BB8949001D956D /* LocationDataDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LocationDataDetail.storyboard; sourceTree = "<group>"; };
-		56F344AE27BB8963001D956D /* LocationDataDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataDetailViewController.swift; sourceTree = "<group>"; };
-		56F344B027BB8F18001D956D /* LocationDataDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataDetailViewModel.swift; sourceTree = "<group>"; };
+		BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
+		BC5B7A7327FEACEE00953C7B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataTableViewCell.swift; sourceTree = "<group>"; };
+		BC5B7A7727FEB29200953C7B /* TableViewCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellReactor.swift; sourceTree = "<group>"; };
+		BC5B7A7927FEBBDB00953C7B /* FavoriteDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDataModel.swift; sourceTree = "<group>"; };
+		BC5B7A7B27FEC53800953C7B /* FavoriteDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDataTableViewCell.swift; sourceTree = "<group>"; };
+		BC5B7A7D27FEC5B900953C7B /* SizeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeStyle.swift; sourceTree = "<group>"; };
+		BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewReactor.swift; sourceTree = "<group>"; };
+		BC5B7A8127FED52D00953C7B /* FavoriteDetailDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDetailDataViewController.swift; sourceTree = "<group>"; };
+		BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Context+Font+Weight+Color.swift"; sourceTree = "<group>"; };
+		DCD1195094B63FE2100C79FA /* Pods-TwinnyAssignmentiOSProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwinnyAssignmentiOSProject.debug.xcconfig"; path = "Target Support Files/Pods-TwinnyAssignmentiOSProject/Pods-TwinnyAssignmentiOSProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA13861F33DB503C68CED2D4 /* Pods_TwinnyAssignmentiOSProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +65,8 @@
 			children = (
 				56DC3E2D27B2BAC00095E297 /* TwinnyAssignmentiOSProject */,
 				56DC3E2C27B2BAC00095E297 /* Products */,
+				CBF718FA467BB05BB333E586 /* Pods */,
+				F1B5ADE1D4B4849E0698D836 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,14 +81,12 @@
 		56DC3E2D27B2BAC00095E297 /* TwinnyAssignmentiOSProject */ = {
 			isa = PBXGroup;
 			children = (
-				56F344A627B8C752001D956D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */,
-				56F344A027B60488001D956D /* Network */,
+				BC5B7A7027FEAB1B00953C7B /* Common */,
 				56DC3E4727B2C97E0095E297 /* Models */,
 				56DC3E4627B2C9750095E297 /* ViewModels */,
 				56DC3E4527B2C96C0095E297 /* VIews */,
 				56DC3E2E27B2BAC00095E297 /* AppDelegate.swift */,
 				56DC3E3027B2BAC00095E297 /* SceneDelegate.swift */,
-				56DC3E3A27B2BAC10095E297 /* Assets.xcassets */,
 				56DC3E3C27B2BAC10095E297 /* LaunchScreen.storyboard */,
 				56DC3E3F27B2BAC10095E297 /* Info.plist */,
 				56DC3E3727B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld */,
@@ -99,10 +98,8 @@
 			isa = PBXGroup;
 			children = (
 				56DC3E4827B2CFF10095E297 /* Cells */,
-				56DC3E3227B2BAC00095E297 /* ViewController.swift */,
-				56DC3E3427B2BAC00095E297 /* Main.storyboard */,
-				56F344AC27BB8949001D956D /* LocationDataDetail.storyboard */,
-				56F344AE27BB8963001D956D /* LocationDataDetailViewController.swift */,
+				BC5B7A7327FEACEE00953C7B /* MainViewController.swift */,
+				BC5B7A8127FED52D00953C7B /* FavoriteDetailDataViewController.swift */,
 			);
 			path = VIews;
 			sourceTree = "<group>";
@@ -110,8 +107,8 @@
 		56DC3E4627B2C9750095E297 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				56F3449E27B4AF62001D956D /* MainViewModel.swift */,
-				56F344B027BB8F18001D956D /* LocationDataDetailViewModel.swift */,
+				BC5B7A7727FEB29200953C7B /* TableViewCellReactor.swift */,
+				BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -119,7 +116,7 @@
 		56DC3E4727B2C97E0095E297 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				56F344A327B8C39C001D956D /* WeatherModel.swift */,
+				BC5B7A7927FEBBDB00953C7B /* FavoriteDataModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -127,20 +124,38 @@
 		56DC3E4827B2CFF10095E297 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				56DC3E4927B2D0160095E297 /* WeatherLocationDataCell.swift */,
-				56DC3E4A27B2D0160095E297 /* WeatherLocationDataCell.xib */,
-				56F344A827BB6D52001D956D /* LoccationDataCell.swift */,
-				56F344A927BB6D52001D956D /* LoccationDataCell.xib */,
+				BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */,
+				BC5B7A7B27FEC53800953C7B /* FavoriteDataTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		56F344A027B60488001D956D /* Network */ = {
+		BC5B7A7027FEAB1B00953C7B /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				56F344A127B794A7001D956D /* API.swift */,
+				56DC3E3A27B2BAC10095E297 /* Assets.xcassets */,
+				BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */,
+				BC5B7A7D27FEC5B900953C7B /* SizeStyle.swift */,
+				BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */,
 			);
-			path = Network;
+			path = Common;
+			sourceTree = "<group>";
+		};
+		CBF718FA467BB05BB333E586 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DCD1195094B63FE2100C79FA /* Pods-TwinnyAssignmentiOSProject.debug.xcconfig */,
+				23DDE6E642E790B449B81C5D /* Pods-TwinnyAssignmentiOSProject.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F1B5ADE1D4B4849E0698D836 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				552A541D8AD0C413320C047F /* Pods_TwinnyAssignmentiOSProject.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,9 +165,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 56DC3E4227B2BAC10095E297 /* Build configuration list for PBXNativeTarget "TwinnyAssignmentiOSProject" */;
 			buildPhases = (
+				060029EA1616231AF0F0B6A2 /* [CP] Check Pods Manifest.lock */,
 				56DC3E2727B2BAC00095E297 /* Sources */,
 				56DC3E2827B2BAC00095E297 /* Frameworks */,
 				56DC3E2927B2BAC00095E297 /* Resources */,
+				EAC76FE39A72146CCCA1D7B2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -201,48 +218,79 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56F344A727B8C752001D956D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv in Resources */,
 				56DC3E3E27B2BAC10095E297 /* LaunchScreen.storyboard in Resources */,
-				56F344AB27BB6D52001D956D /* LoccationDataCell.xib in Resources */,
 				56DC3E3B27B2BAC10095E297 /* Assets.xcassets in Resources */,
-				56F344AD27BB8949001D956D /* LocationDataDetail.storyboard in Resources */,
-				56DC3E4C27B2D0160095E297 /* WeatherLocationDataCell.xib in Resources */,
-				56DC3E3627B2BAC00095E297 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		060029EA1616231AF0F0B6A2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TwinnyAssignmentiOSProject-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EAC76FE39A72146CCCA1D7B2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TwinnyAssignmentiOSProject/Pods-TwinnyAssignmentiOSProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TwinnyAssignmentiOSProject/Pods-TwinnyAssignmentiOSProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TwinnyAssignmentiOSProject/Pods-TwinnyAssignmentiOSProject-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		56DC3E2727B2BAC00095E297 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56F344B127BB8F18001D956D /* LocationDataDetailViewModel.swift in Sources */,
-				56F344AA27BB6D52001D956D /* LoccationDataCell.swift in Sources */,
-				56DC3E3327B2BAC00095E297 /* ViewController.swift in Sources */,
+				BC5B7A8027FED46400953C7B /* MainViewReactor.swift in Sources */,
+				BC5B7A7A27FEBBDB00953C7B /* FavoriteDataModel.swift in Sources */,
 				56DC3E2F27B2BAC00095E297 /* AppDelegate.swift in Sources */,
+				BC5B7A7C27FEC53800953C7B /* FavoriteDataTableViewCell.swift in Sources */,
 				56DC3E3127B2BAC00095E297 /* SceneDelegate.swift in Sources */,
-				56F344AF27BB8963001D956D /* LocationDataDetailViewController.swift in Sources */,
 				56DC3E3927B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld in Sources */,
-				56DC3E4B27B2D0160095E297 /* WeatherLocationDataCell.swift in Sources */,
-				56F3449F27B4AF62001D956D /* MainViewModel.swift in Sources */,
-				56F344A427B8C39C001D956D /* WeatherModel.swift in Sources */,
-				56F344A227B794A7001D956D /* API.swift in Sources */,
+				BC5B7A8227FED52D00953C7B /* FavoriteDetailDataViewController.swift in Sources */,
+				BC5B7A7E27FEC5B900953C7B /* SizeStyle.swift in Sources */,
+				BC5B7A7427FEACEE00953C7B /* MainViewController.swift in Sources */,
+				BC5B7A8427FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift in Sources */,
+				BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */,
+				BC5B7A7627FEB07500953C7B /* LocationDataTableViewCell.swift in Sources */,
+				BC5B7A7827FEB29200953C7B /* TableViewCellReactor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		56DC3E3427B2BAC00095E297 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				56DC3E3527B2BAC00095E297 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		56DC3E3C27B2BAC10095E297 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -372,6 +420,7 @@
 		};
 		56DC3E4327B2BAC10095E297 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCD1195094B63FE2100C79FA /* Pods-TwinnyAssignmentiOSProject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -382,7 +431,6 @@
 				INFOPLIST_FILE = TwinnyAssignmentiOSProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -401,6 +449,7 @@
 		};
 		56DC3E4427B2BAC10095E297 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23DDE6E642E790B449B81C5D /* Pods-TwinnyAssignmentiOSProject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -411,7 +460,6 @@
 				INFOPLIST_FILE = TwinnyAssignmentiOSProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
