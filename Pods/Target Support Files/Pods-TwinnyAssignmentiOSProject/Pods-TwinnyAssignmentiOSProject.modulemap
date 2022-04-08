@@ -1,6 +1,0 @@
-framework module Pods_TwinnyAssignmentiOSProject {
-  umbrella header "Pods-TwinnyAssignmentiOSProject-umbrella.h"
-
-  export *
-  module * { export * }
-}
