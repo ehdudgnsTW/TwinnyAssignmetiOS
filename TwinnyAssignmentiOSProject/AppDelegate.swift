@@ -10,12 +10,18 @@ import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    var window: UIWindow?
 
 
     //fb: .gitignore 파일을 포함시키는 것을 권장합니다.
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let vc = MainViewController()
+        let navigationController = UINavigationController(rootViewController: vc)
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
         return true
     }
 
