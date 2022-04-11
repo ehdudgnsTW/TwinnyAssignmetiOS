@@ -6,16 +6,18 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import ReactorKit
 import SnapKit
 
 class MainViewController: UIViewController {
     
-    private var filterString: [String] = ["seoul","busan","deajeon","ulsan","kangwon","수원"]
-    private var favoriteData: [FavoriteDataModel] = [FavoriteDataModel(cityTemperature: 12, cityName: "서울"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "대전"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "부산"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "울산"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "강원")]
+    private let reactor: TableViewCellReactor = TableViewCellReactor()
+    private let viewModel = MainViewReactor()
+    private let disposeBag:DisposeBag = DisposeBag()
+    private var searchData: [FavoriteDataModel] = []
+    private var favoriteData: [FavoriteDataModel] = []
     
     private var isSearching: Bool {
         let searchController = self.navigationItem.searchController
@@ -36,12 +38,22 @@ class MainViewController: UIViewController {
         initView()
     }
     
+  
+    
     private func initView() {
         let view = UIView()
         self.view = view
         view.backgroundColor = .white
         configureSearchBar()
         configureTableView()
+        configureData() 
+    }
+    
+    private func configureData() {
+        viewModel.favoriteData().subscribe {
+            data in
+            self.favoriteData = data
+        }.disposed(by: disposeBag)
     }
     
     private func configureSearchBar() {
@@ -64,6 +76,7 @@ class MainViewController: UIViewController {
             make in
             make.top.trailing.leading.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+        
     }
     
 }
@@ -71,20 +84,36 @@ class MainViewController: UIViewController {
 extension MainViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
+        
+        viewModel.favoriteData().subscribe {
+            data in
+            self.favoriteData = data
+        }.disposed(by: disposeBag)
+        
+        viewModel.searchFilterData(txt: text).subscribe {
+            data in
+            self.searchData = data
+        }.disposed(by: disposeBag)
         tableView.reloadData()
-        print("text:\(text)")
     }
 }
 
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = FavoriteDetailDataViewController()
+        
+        var vc: UIViewController = UIViewController()
+        if isSearching {
+            vc = FavoriteDetailDataViewController(detailData: searchData[indexPath.row])
+        }
+        else {
+            vc = FavoriteDetailDataViewController(detailData: favoriteData[indexPath.row])
+        }
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if isSearching {
-            return 44
+            return 50
         }
         return 100
 
@@ -94,7 +123,7 @@ extension MainViewController: UITableViewDelegate {
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching {
-            return filterString.count
+            return searchData.count
         }
         return favoriteData.count
     }
@@ -105,15 +134,17 @@ extension MainViewController: UITableViewDataSource {
                 return LocationDataTableViewCell()
             }
             cell.selectionStyle = .none
-            cell.configureSearchingView(filterString[indexPath.row])
+            cell.configureSearchingView(searchData[indexPath.row])
+            cell.bind(reactor: self.reactor)
             return cell
         }
         else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell else {
-                return FavoriteDataTableViewCell()
+                return UITableViewCell()
             }
             cell.selectionStyle = .none
             cell.configureFavoriteView(favoriteData[indexPath.row])
+            cell.bind(reactor: self.reactor)
             return cell
         }
     }

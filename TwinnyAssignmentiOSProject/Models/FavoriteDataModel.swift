@@ -8,6 +8,28 @@
 import Foundation
 
 struct FavoriteDataModel {
-    let cityTemperature: Int
+    var avgTemperature: Float
+    let maxTemperature: Float
+    let minTemperature: Float
+    var isFavorite: Bool
+    let index: Int
     let cityName: String
+    
+    init() {
+        self.avgTemperature = 100
+        self.maxTemperature = 100
+        self.minTemperature = 100
+        self.isFavorite = false
+        self.cityName = ""
+        self.index = -1
+    }
+    
+    init(avgTemperature: Float, maxTemperature: Float, minTemperature: Float, isFavorite: Bool, cityName: String, index: Int) {
+        self.avgTemperature = avgTemperature
+        self.maxTemperature = maxTemperature
+        self.minTemperature = minTemperature
+        self.isFavorite = isFavorite
+        self.index = index
+        self.cityName = cityName
+    }
 }

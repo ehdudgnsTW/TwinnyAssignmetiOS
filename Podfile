@@ -11,6 +11,7 @@ target 'TwinnyAssignmentiOSProject' do
   pod 'Then'
   pod 'SDWebImage'
   pod 'Alamofire', '~> 5.5'
+  pod 'RxDataSources'
 
   # Pods for TwinnyAssignmentiOSProject
 

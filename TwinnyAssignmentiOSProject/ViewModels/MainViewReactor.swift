@@ -8,28 +8,42 @@
 import Foundation
 import ReactorKit
 import RxSwift
+import RxRelay
 
-class MainViewReactor: Reactor {
+class MainViewReactor {
     
-    enum Action {
-        
+    private var repository:RepositoryProtocol = MockRepository()
+    private var totalData: [FavoriteDataModel] = []
+    private let disposBag: DisposeBag = DisposeBag()
+    
+    init() {
+        repository.getCSVFileToData().subscribe({
+            data in
+            if let data = data.element {
+                self.totalData = data
+            }
+        }).disposed(by: disposBag)
+    }
+
+    func favoriteData() -> Observable<[FavoriteDataModel]> {
+        let resultArray = totalData.filter {
+            $0.isFavorite
+        }
+        return .just(resultArray)
+    }
+
+    func searchFilterData(txt: String) -> Observable<[FavoriteDataModel]> {
+        if txt != " " {
+            var resultArray: [FavoriteDataModel] = []
+            resultArray = totalData.filter {
+                $0.cityName.contains(txt)
+            }
+            return .just(resultArray)
+        }
+        else {
+            return .just(totalData)
+        }
     }
     
-    enum Mitation {
-        
-    }
-    
-    struct State {
-    
-    }
-    
-    var initialState: State = State()
-    
-    func mutate(action: Action) -> Observable<Action> {
-        
-    }
-    
-    func reduce(state: State, mutation: Action) -> State {
-        
-    }
+   
 }

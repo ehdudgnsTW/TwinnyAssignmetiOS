@@ -12,6 +12,9 @@
 		56DC3E3927B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56DC3E3727B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld */; };
 		56DC3E3B27B2BAC10095E297 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E3A27B2BAC10095E297 /* Assets.xcassets */; };
 		56DC3E3E27B2BAC10095E297 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E3C27B2BAC10095E297 /* LaunchScreen.storyboard */; };
+		BC1F24E02803EE4F00291D5D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv in Resources */ = {isa = PBXBuildFile; fileRef = BC1F24DF2803EE4F00291D5D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */; };
+		BC5A62D028001618004553CF /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A62CF28001618004553CF /* Repository.swift */; };
+		BC5A62D228002D0C004553CF /* DetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5A62D128002D0C004553CF /* DetailViewReactor.swift */; };
 		BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */; };
 		BC5B7A7427FEACEE00953C7B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7327FEACEE00953C7B /* MainViewController.swift */; };
 		BC5B7A7627FEB07500953C7B /* LocationDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */; };
@@ -35,6 +38,9 @@
 		56DC3E3A27B2BAC10095E297 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56DC3E3D27B2BAC10095E297 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56DC3E3F27B2BAC10095E297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC1F24DF2803EE4F00291D5D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv"; sourceTree = "<group>"; };
+		BC5A62CF28001618004553CF /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		BC5A62D128002D0C004553CF /* DetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewReactor.swift; sourceTree = "<group>"; };
 		BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		BC5B7A7327FEACEE00953C7B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataTableViewCell.swift; sourceTree = "<group>"; };
@@ -81,6 +87,8 @@
 		56DC3E2D27B2BAC00095E297 /* TwinnyAssignmentiOSProject */ = {
 			isa = PBXGroup;
 			children = (
+				BC1F24DF2803EE4F00291D5D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */,
+				BC5A62CE2800160C004553CF /* Repository */,
 				BC5B7A7027FEAB1B00953C7B /* Common */,
 				56DC3E4727B2C97E0095E297 /* Models */,
 				56DC3E4627B2C9750095E297 /* ViewModels */,
@@ -109,6 +117,7 @@
 			children = (
 				BC5B7A7727FEB29200953C7B /* TableViewCellReactor.swift */,
 				BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */,
+				BC5A62D128002D0C004553CF /* DetailViewReactor.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -128,6 +137,14 @@
 				BC5B7A7B27FEC53800953C7B /* FavoriteDataTableViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		BC5A62CE2800160C004553CF /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				BC5A62CF28001618004553CF /* Repository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		BC5B7A7027FEAB1B00953C7B /* Common */ = {
@@ -218,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC1F24E02803EE4F00291D5D /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv in Resources */,
 				56DC3E3E27B2BAC10095E297 /* LaunchScreen.storyboard in Resources */,
 				56DC3E3B27B2BAC10095E297 /* Assets.xcassets in Resources */,
 			);
@@ -273,12 +291,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC5B7A8027FED46400953C7B /* MainViewReactor.swift in Sources */,
+				BC5A62D228002D0C004553CF /* DetailViewReactor.swift in Sources */,
 				BC5B7A7A27FEBBDB00953C7B /* FavoriteDataModel.swift in Sources */,
 				56DC3E2F27B2BAC00095E297 /* AppDelegate.swift in Sources */,
 				BC5B7A7C27FEC53800953C7B /* FavoriteDataTableViewCell.swift in Sources */,
 				56DC3E3127B2BAC00095E297 /* SceneDelegate.swift in Sources */,
 				56DC3E3927B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld in Sources */,
 				BC5B7A8227FED52D00953C7B /* FavoriteDetailDataViewController.swift in Sources */,
+				BC5A62D028001618004553CF /* Repository.swift in Sources */,
 				BC5B7A7E27FEC5B900953C7B /* SizeStyle.swift in Sources */,
 				BC5B7A7427FEACEE00953C7B /* MainViewController.swift in Sources */,
 				BC5B7A8427FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift in Sources */,

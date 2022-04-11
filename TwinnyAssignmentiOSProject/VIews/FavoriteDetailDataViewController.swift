@@ -8,32 +8,33 @@
 import UIKit
 
 class FavoriteDetailDataViewController: UIViewController {
-
+    
+    private var detailData: FavoriteDataModel
     
     private let currentTemperature: UILabel = {
         let label = UILabel()
-        label.setTextFontWeightColor("12", font: 40, weight: .bold, nil)
+        label.setTextFontWeightColor("nil", font: 40, weight: .bold, nil)
         label.textAlignment = .center
         return label
     }()
     
     private let maxTemperature: UILabel = {
         let label = UILabel()
-        label.setTextFontWeightColor("14", font: 20, weight: .medium, nil)
+        label.setTextFontWeightColor("nil", font: 20, weight: .medium, nil)
         label.textAlignment = .left
         return label
     }()
     
     private let minTemperature: UILabel = {
         let label = UILabel()
-        label.setTextFontWeightColor("8", font: 20, weight: .medium, nil)
+        label.setTextFontWeightColor("nil", font: 20, weight: .medium, nil)
         label.textAlignment = .left
         return label
     }()
     
     private let cityName: UILabel = {
         let label = UILabel()
-        label.setTextFontWeightColor("서울시 용문구 용문동", font: 20, weight: .medium, nil)
+        label.setTextFontWeightColor("nil", font: 20, weight: .medium, nil)
         label.textAlignment = .center
         return label
     }()
@@ -72,19 +73,43 @@ class FavoriteDetailDataViewController: UIViewController {
         return stackView
     }()
     
+    init(detailData: FavoriteDataModel) {
+        self.detailData = detailData
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
-
         // Do any additional setup after loading the view.
     }
     
-    private func initView() {
+    func initView() {
         let view = UIView()
         self.view = view
         
         view.backgroundColor = .white
         configureConstraints()
+    }
+    
+    private func configurData() {
+        
+        currentTemperature.text = "\(detailData.avgTemperature)"
+        maxTemperature.text = "\(detailData.maxTemperature)"
+        minTemperature.text = "\(detailData.minTemperature)"
+        cityName.text = detailData.cityName
+        
+        if detailData.isFavorite {
+            favoriteButton.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_yellow"), 20, 20), for: .normal)
+        }
+        else {
+            favoriteButton.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_black"), 20, 20), for: .normal)
+        }
+        
     }
     
     private func configureConstraints() {
@@ -95,6 +120,8 @@ class FavoriteDetailDataViewController: UIViewController {
         [currentTemperature,stackView,cityName,divideView,favoriteButton].forEach {
             self.view.addSubview($0)
         }
+        
+        configurData()
         
         favoriteButton.snp.makeConstraints {
             make in
