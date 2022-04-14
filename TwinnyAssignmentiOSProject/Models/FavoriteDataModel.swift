@@ -8,6 +8,6 @@
 import Foundation
 
 struct FavoriteDataModel {
-    let cityTemperature: Int
+    var cityTemperature: Int
     let cityName: String
 }
