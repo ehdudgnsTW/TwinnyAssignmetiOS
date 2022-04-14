@@ -7,15 +7,17 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import ReactorKit
+import RxCocoa
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController,View {
     
+    typealias Reactor = MainViewReactor
     private var filterString: [String] = ["seoul","busan","deajeon","ulsan","kangwon","수원"]
-    private var favoriteData: [FavoriteDataModel] = [FavoriteDataModel(cityTemperature: 12, cityName: "서울"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "대전"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "부산"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "울산"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "강원")]
+    private var favoriteData: [FavoriteDataModel] = []
+    var disposeBag: DisposeBag = DisposeBag()
+
     
     private var isSearching: Bool {
         let searchController = self.navigationItem.searchController
@@ -34,6 +36,10 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
+    }
+    
+    func bind(reactor: MainViewReactor) {
+        
     }
     
     private func initView() {
