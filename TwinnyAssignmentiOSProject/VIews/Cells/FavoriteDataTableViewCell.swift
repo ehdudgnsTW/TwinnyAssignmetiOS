@@ -42,7 +42,7 @@ class FavoriteDataTableViewCell: UITableViewCell {
         
         cityName.text = favoriteContents.cityName
         cityName.textAlignment = .right
-        cityTemperature.text = "\(favoriteContents.cityTemperature)"
+        cityTemperature.text = "\(favoriteContents.currentTemperature)"
         
         favoriteButton.snp.makeConstraints {
             make in
