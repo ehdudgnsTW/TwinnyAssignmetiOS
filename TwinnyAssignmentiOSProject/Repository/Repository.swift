@@ -43,7 +43,7 @@ final class MockRepository: RepositoryProtocol {
             if let dataArr = dataEncoded?.components(separatedBy: "\n").map({
                 $0.components(separatedBy: "\",\"")
             }) {
-                for i in 1..<dataArr.count {
+                for i in 1..<dataArr.count-1 {
                     if dataArr[i][3] != "", dataArr[i][4] != "" {
                         let tmpStr = "\(dataArr[i][2]) \(dataArr[i][3]) \(dataArr[i][4])"
                         XYData[tmpStr] = [dataArr[i][4],dataArr[i][5]]

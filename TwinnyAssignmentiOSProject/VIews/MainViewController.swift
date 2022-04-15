@@ -31,7 +31,14 @@ class MainViewController: UIViewController,View {
         return tableView
     }()
     
+    init(reactor: Reactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +46,9 @@ class MainViewController: UIViewController,View {
     }
     
     func bind(reactor: MainViewReactor) {
-        
+        self.rx.viewDidLoad.map {
+            Reactor.Action.setTotalData
+        }.bind(to: reactor.action).disposed(by: disposeBag)
     }
     
     private func initView() {
@@ -72,6 +81,12 @@ class MainViewController: UIViewController,View {
         }
     }
     
+}
+extension Reactive where Base: MainViewController {
+    var viewDidLoad: ControlEvent<Void> {
+        let source = self.methodInvoked(#selector(Base.viewDidLoad)).map { _ in }
+        return ControlEvent(events: source)
+    }
 }
 
 extension MainViewController: UISearchResultsUpdating {
