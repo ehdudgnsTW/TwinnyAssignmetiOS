@@ -14,10 +14,8 @@ import RxCocoa
 class MainViewController: UIViewController,View {
     
     typealias Reactor = MainViewReactor
-    private var filterString: [String] = ["seoul","busan","deajeon","ulsan","kangwon","수원"]
-    private var favoriteData: [FavoriteDataModel] = []
     var disposeBag: DisposeBag = DisposeBag()
-
+    
     
     private var isSearching: Bool {
         let searchController = self.navigationItem.searchController
@@ -29,6 +27,11 @@ class MainViewController: UIViewController,View {
     private let tableView: UITableView = {
         let tableView = UITableView()
         return tableView
+    }()
+    
+    private let searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        return searchController
     }()
     
     init(reactor: Reactor) {
@@ -49,6 +52,21 @@ class MainViewController: UIViewController,View {
         self.rx.viewDidLoad.map {
             Reactor.Action.setTotalData
         }.bind(to: reactor.action).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text.map {
+            Reactor.Action.searchText($0)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+        
+        reactor.state.map {
+            $0.filterData
+        }.bind(to: tableView.rx.items) {
+            tablView, row, item in
+            guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
+            else { return LocationDataTableViewCell() }
+            cell.configureSearchingView(item.cityName)
+            return cell
+        }.disposed(by: disposeBag)
+        
     }
     
     private func initView() {
@@ -60,10 +78,8 @@ class MainViewController: UIViewController,View {
     }
     
     private func configureSearchBar() {
-        let searchController = UISearchController(searchResultsController: nil)
         self.navigationItem.searchController = searchController
         self.navigationItem.title = "오늘의 날씨"
-        searchController.searchResultsUpdater = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
     }
     
@@ -72,7 +88,6 @@ class MainViewController: UIViewController,View {
         self.view.addSubview(tableView)
         
         tableView.delegate = self
-        tableView.dataSource = self
         tableView.register(LocationDataTableViewCell.self, forCellReuseIdentifier: "LocationDataTableViewCell")
         tableView.register(FavoriteDataTableViewCell.self, forCellReuseIdentifier: "FavoriteDataTableViewCell")
         tableView.snp.makeConstraints {
@@ -112,30 +127,4 @@ extension MainViewController: UITableViewDelegate {
     }
 }
 
-extension MainViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching {
-            return filterString.count
-        }
-        return favoriteData.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if isSearching {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell else {
-                return LocationDataTableViewCell()
-            }
-            cell.selectionStyle = .none
-            cell.configureSearchingView(filterString[indexPath.row])
-            return cell
-        }
-        else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell else {
-                return FavoriteDataTableViewCell()
-            }
-            cell.selectionStyle = .none
-            cell.configureFavoriteView(favoriteData[indexPath.row])
-            return cell
-        }
-    }
-}
+
