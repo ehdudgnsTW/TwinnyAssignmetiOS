@@ -14,17 +14,21 @@ class MainViewReactor: Reactor {
     private let repository = MockRepository()
     private var totalData: [FavoriteDataModel] = []
     private var favoriteDatas: [FavoriteDataModel] = []
+    private var searchingDatas: [FavoriteDataModel] = []
     
     enum Action {
         case setTotalData
+        case searchText(String?)
     }
     
     enum Mutation {
         case favoriteData([FavoriteDataModel])
+        case searchingData([FavoriteDataModel])
     }
     
     struct State {
         var filterData: [FavoriteDataModel] = []
+        var isSearching: Bool = false
     }
     
     var initialState: State = State()
@@ -40,6 +44,16 @@ class MainViewReactor: Reactor {
                 $0.isFavoriet
             }
             return .just(Mutation.favoriteData(favoriteDatas))
+        case .searchText(let targetText):
+            if let text = targetText, targetText != "" {
+                searchingDatas = totalData.filter {
+                    $0.cityName.contains(text)
+                }
+                return .just(Mutation.searchingData(searchingDatas))
+            }
+            else {
+                return .just(Mutation.searchingData(totalData))
+            }
         }
     }
     
@@ -47,6 +61,11 @@ class MainViewReactor: Reactor {
         var state = state
         switch mutation {
         case .favoriteData(let array):
+            state.isSearching = false
+            state.filterData = array
+            return state
+        case .searchingData(let array):
+            state.isSearching = true
             state.filterData = array
             return state
         }
