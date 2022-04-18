@@ -29,7 +29,6 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
 
     private let favoriteButton: UIButton = {
         let button = UIButton()
-        button.imageMoveRight()
         button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_yellow"), 30, 30), for: .normal)
         return button
     }()
@@ -69,6 +68,7 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
             make.leading.equalTo(cityTemperature.snp.trailing)
             make.bottom.equalToSuperview().offset(-10)
             make.trailing.equalToSuperview().offset(-25)
+            make.height.equalTo(40)
         }
     }
     
