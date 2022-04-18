@@ -8,6 +8,14 @@
 import UIKit
 
 extension UIButton {
+    func favoriteStateStarImageSetting(status: Bool) {
+        if status {
+            self.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_yellow"), 20, 20), for: .normal)
+        }
+        else {
+            self.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_black"), 20, 20), for: .normal)
+        }
+    }
     
     func imageMoveRight() {
         self.contentHorizontalAlignment = .left
@@ -19,11 +27,4 @@ extension UIButton {
     }
 }
 
-func imageSetting(_ button: UIButton,status: Bool) {
-    if status {
-        button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_yellow"), 20, 20), for: .normal)
-    }
-    else {
-        button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_black"), 20, 20), for: .normal)
-    }
-}
+
