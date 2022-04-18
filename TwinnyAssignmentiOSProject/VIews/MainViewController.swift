@@ -48,9 +48,19 @@ class MainViewController: UIViewController,View {
             Reactor.Action.setTotalData
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
+        searchController.searchBar.rx.textDidBeginEditing
+            .map {
+                Reactor.Action.searchText("")
+            }.bind(to: reactor.action).disposed(by: disposeBag)
+        
         searchController.searchBar.rx.text.map {
             Reactor.Action.searchText($0)
         }.bind(to: reactor.action).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.textDidEndEditing.map {
+            Reactor.Action.setTotalData
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+        
         
         reactor.state.map {
             $0.isSearching
