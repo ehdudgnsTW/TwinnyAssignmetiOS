@@ -58,10 +58,10 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
         
         favoriteButton.snp.makeConstraints {
             make in
-            make.leading.equalTo(cityTemperature.snp.trailing)
             make.trailing.equalToSuperview().offset(-25)
             make.top.equalToSuperview().offset(10)
             make.bottom.equalTo(cityName.snp.top)
+            make.width.equalTo(40)
         }
         
         cityTemperature.snp.makeConstraints {
