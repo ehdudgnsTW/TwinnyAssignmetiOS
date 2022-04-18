@@ -58,7 +58,7 @@ class MainViewController: UIViewController,View {
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidEndEditing.map {
-            Reactor.Action.setTotalData
+            Reactor.Action.favoriteData
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         
