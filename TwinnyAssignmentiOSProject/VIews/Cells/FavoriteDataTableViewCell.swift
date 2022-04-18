@@ -48,9 +48,9 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
     
     func configureFavoriteView(_ favoriteContents: FavoriteDataModel) {
         dataModel = favoriteContents
-        self.addSubview(cityTemperature)
-        self.addSubview(cityName)
-        self.addSubview(favoriteButton)
+        self.contentView.addSubview(cityTemperature)
+        self.contentView.addSubview(cityName)
+        self.contentView.addSubview(favoriteButton)
         
         cityName.text = favoriteContents.cityName
         cityName.textAlignment = .right
