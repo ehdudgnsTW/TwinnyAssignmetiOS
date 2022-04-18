@@ -8,16 +8,17 @@
 import Foundation
 import ReactorKit
 import RxSwift
+import UIKit
 
 class MainViewReactor: Reactor {
     
     private let repository = MockRepository()
     private var totalData: [FavoriteDataModel] = []
-    private var favoriteDatas: [FavoriteDataModel] = []
-    private var searchingDatas: [FavoriteDataModel] = []
+    private var searchWord: String = ""
     
     enum Action {
         case setTotalData
+        case changeFavorite(FavoriteDataModel,Bool)
         case searchText(String?)
     }
     
@@ -40,19 +41,44 @@ class MainViewReactor: Reactor {
                 data in
                 self.totalData = data
             }.disposed(by: DisposeBag())
-            favoriteDatas = totalData.filter {
+            let favoriteDatas = totalData.filter {
                 $0.isFavoriet
             }
             return .just(Mutation.favoriteData(favoriteDatas))
         case .searchText(let targetText):
             if let text = targetText, targetText != "" {
-                searchingDatas = totalData.filter {
+                searchWord = text
+                let searchingDatas = totalData.filter {
                     $0.cityName.contains(text)
                 }
                 return .just(Mutation.searchingData(searchingDatas))
             }
             else {
                 return .just(Mutation.searchingData(totalData))
+            }
+        case .changeFavorite(let model, let isSearching):
+            for i in 0..<totalData.count {
+                if model.cityId == totalData[i].cityId {
+                    totalData[i].isFavoriet.toggle()
+                }
+            }
+            if isSearching {
+                if searchWord != "" {
+                    let searchingDatas = totalData.filter {
+                        $0.cityName.contains(self.searchWord)
+                    }
+                    return .just(Mutation.searchingData(searchingDatas))
+                }
+                else {
+                    return .just(Mutation.searchingData(totalData))
+                }
+                
+            }
+            else {
+                let favoriteDatas = totalData.filter {
+                    $0.isFavoriet
+                }
+                return .just(Mutation.favoriteData(favoriteDatas))
             }
         }
     }
