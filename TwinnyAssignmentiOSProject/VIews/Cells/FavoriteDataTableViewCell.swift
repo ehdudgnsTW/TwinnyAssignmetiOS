@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import ReactorKit
 
-class FavoriteDataTableViewCell: UITableViewCell {
+class FavoriteDataTableViewCell: UITableViewCell,View {
+    
+    typealias Reactor = MainViewReactor
+    var disposeBag: DisposeBag = DisposeBag()
+    private var dataModel: FavoriteDataModel!
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -24,32 +29,30 @@ class FavoriteDataTableViewCell: UITableViewCell {
 
     private let favoriteButton: UIButton = {
         let button = UIButton()
-        button.imageMoveRight()
-        button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_black"), 30, 30), for: .normal)
+        button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_yellow"), 30, 30), for: .normal)
         return button
     }()
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureStyle()
     }
     
-    func configureFavoriteView(_ favoriteContents: FavoriteDataModel) {
-        self.addSubview(cityTemperature)
-        self.addSubview(cityName)
-        self.addSubview(favoriteButton)
-        
-        cityName.text = favoriteContents.cityName
-        cityName.textAlignment = .right
-        cityTemperature.text = "\(favoriteContents.cityTemperature)"
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureStyle() {
+        self.contentView.addSubview(cityTemperature)
+        self.contentView.addSubview(cityName)
+        self.contentView.addSubview(favoriteButton)
         
         favoriteButton.snp.makeConstraints {
             make in
-            make.leading.equalTo(cityTemperature.snp.trailing)
             make.trailing.equalToSuperview().offset(-25)
             make.top.equalToSuperview().offset(10)
             make.bottom.equalTo(cityName.snp.top)
+            make.width.equalTo(40)
         }
         
         cityTemperature.snp.makeConstraints {
@@ -65,7 +68,28 @@ class FavoriteDataTableViewCell: UITableViewCell {
             make.leading.equalTo(cityTemperature.snp.trailing)
             make.bottom.equalToSuperview().offset(-10)
             make.trailing.equalToSuperview().offset(-25)
+            make.height.equalTo(40)
         }
+    }
+    
+    func bind(reactor: MainViewReactor) {
+        favoriteButton.rx.tap.map {
+            Reactor.Action.changeFavorite(self.dataModel, false)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+    func configureFavoriteView(_ favoriteContents: FavoriteDataModel) {
+        dataModel = favoriteContents
+        cityName.text = favoriteContents.cityName
+        cityName.textAlignment = .right
+        cityTemperature.text = "\(favoriteContents.currentTemperature)"
+        
     }
 
 }

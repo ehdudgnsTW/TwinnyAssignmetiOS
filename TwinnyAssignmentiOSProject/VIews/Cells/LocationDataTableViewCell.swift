@@ -7,8 +7,13 @@
 
 import UIKit
 import SnapKit
+import ReactorKit
 
-class LocationDataTableViewCell: UITableViewCell {
+class LocationDataTableViewCell: UITableViewCell,View {
+    
+    typealias Reactor = MainViewReactor
+    var disposeBag: DisposeBag = DisposeBag()
+    private var dataModel: FavoriteDataModel!
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -30,13 +35,19 @@ class LocationDataTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
   
-    
-    
-    func configureSearchingView(_ searchContents: String) {
-        self.addSubview(cityName)
-        self.addSubview(favoriteButton)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureStyle()
         
-        cityName.text = searchContents
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureStyle() {
+        self.contentView.addSubview(cityName)
+        self.contentView.addSubview(favoriteButton)
         
         cityName.snp.makeConstraints {
             make in
@@ -52,6 +63,19 @@ class LocationDataTableViewCell: UITableViewCell {
             make.leading.equalTo(cityName.snp.trailing)
         }
         
+        
+    }
+    
+    func bind(reactor: MainViewReactor) {
+        favoriteButton.rx.tap.map {
+            Reactor.Action.changeFavorite(self.dataModel, true)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+    }
+    
+    func configureSearchingView(_ searchContents: FavoriteDataModel) {
+        dataModel = searchContents
+        cityName.text = searchContents.cityName
+        favoriteButton.favoriteStateStarImageSetting(status: searchContents.isFavoriet)
     }
 
 }

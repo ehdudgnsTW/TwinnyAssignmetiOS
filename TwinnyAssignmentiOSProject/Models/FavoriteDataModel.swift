@@ -8,6 +8,10 @@
 import Foundation
 
 struct FavoriteDataModel {
-    let cityTemperature: Int
+    var currentTemperature: Float
+    var maxTemperature: Float
+    var minTemperature: Float
+    let cityId: String
+    var isFavoriet: Bool
     let cityName: String
 }

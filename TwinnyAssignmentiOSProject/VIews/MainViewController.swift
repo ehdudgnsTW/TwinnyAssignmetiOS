@@ -7,33 +7,87 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import ReactorKit
+import RxCocoa
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController,View {
     
-    private var filterString: [String] = ["seoul","busan","deajeon","ulsan","kangwon","수원"]
-    private var favoriteData: [FavoriteDataModel] = [FavoriteDataModel(cityTemperature: 12, cityName: "서울"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "대전"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "부산"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "울산"),
-                                                       FavoriteDataModel(cityTemperature: 12, cityName: "강원")]
+    typealias Reactor = MainViewReactor
+    var disposeBag: DisposeBag = DisposeBag()
     
-    private var isSearching: Bool {
-        let searchController = self.navigationItem.searchController
-        let isActive = searchController?.isActive ?? false
-        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
-        return isActive && isSearchBarHasText
-    }
+    
+    private var isSearching: Bool = false
     
     private let tableView: UITableView = {
         let tableView = UITableView()
         return tableView
     }()
     
+    private let searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        return searchController
+    }()
     
+    init(reactor: Reactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
+    }
+    
+    func bind(reactor: MainViewReactor) {
+        self.rx.viewDidLoad.map {
+            Reactor.Action.favoriteData
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.textDidBeginEditing
+            .map {
+                Reactor.Action.searchText("")
+            }.bind(to: reactor.action).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text.map {
+            Reactor.Action.searchText($0)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.textDidEndEditing.map {
+            Reactor.Action.favoriteData
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+        
+        
+        reactor.state.map {
+            $0.isSearching
+        }.bind(onNext: { [weak self] in
+            self?.isSearching = $0
+        }).disposed(by: disposeBag)
+        
+        reactor.state.map {
+            $0.filterData
+        }.bind(to: tableView.rx.items) {
+            tablView, row, item in
+            if self.isSearching {
+                guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
+                else { return LocationDataTableViewCell() }
+                cell.configureSearchingView(item)
+                cell.reactor = reactor
+                return cell
+            }
+            else {
+                guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
+                else { return FavoriteDataTableViewCell() }
+                cell.configureFavoriteView(item)
+                cell.reactor = reactor
+                return cell
+            }
+        }.disposed(by: disposeBag)
+        
     }
     
     private func initView() {
@@ -45,10 +99,8 @@ class MainViewController: UIViewController {
     }
     
     private func configureSearchBar() {
-        let searchController = UISearchController(searchResultsController: nil)
         self.navigationItem.searchController = searchController
         self.navigationItem.title = "오늘의 날씨"
-        searchController.searchResultsUpdater = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
     }
     
@@ -57,7 +109,6 @@ class MainViewController: UIViewController {
         self.view.addSubview(tableView)
         
         tableView.delegate = self
-        tableView.dataSource = self
         tableView.register(LocationDataTableViewCell.self, forCellReuseIdentifier: "LocationDataTableViewCell")
         tableView.register(FavoriteDataTableViewCell.self, forCellReuseIdentifier: "FavoriteDataTableViewCell")
         tableView.snp.makeConstraints {
@@ -91,30 +142,4 @@ extension MainViewController: UITableViewDelegate {
     }
 }
 
-extension MainViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching {
-            return filterString.count
-        }
-        return favoriteData.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if isSearching {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell else {
-                return LocationDataTableViewCell()
-            }
-            cell.selectionStyle = .none
-            cell.configureSearchingView(filterString[indexPath.row])
-            return cell
-        }
-        else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell else {
-                return FavoriteDataTableViewCell()
-            }
-            cell.selectionStyle = .none
-            cell.configureFavoriteView(favoriteData[indexPath.row])
-            return cell
-        }
-    }
-}
+
