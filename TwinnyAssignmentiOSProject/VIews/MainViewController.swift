@@ -118,12 +118,6 @@ class MainViewController: UIViewController,View {
     }
     
 }
-extension Reactive where Base: MainViewController {
-    var viewDidLoad: ControlEvent<Void> {
-        let source = self.methodInvoked(#selector(Base.viewDidLoad)).map { _ in }
-        return ControlEvent(events: source)
-    }
-}
 
 extension MainViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {

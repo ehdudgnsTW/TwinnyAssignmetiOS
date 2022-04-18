@@ -12,6 +12,7 @@
 		56DC3E3927B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56DC3E3727B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld */; };
 		56DC3E3B27B2BAC10095E297 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E3A27B2BAC10095E297 /* Assets.xcassets */; };
 		56DC3E3E27B2BAC10095E297 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56DC3E3C27B2BAC10095E297 /* LaunchScreen.storyboard */; };
+		BC21DDB4280D5E6500EB7ADD /* ExtensionReactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC21DDB3280D5E6500EB7ADD /* ExtensionReactorViewController.swift */; };
 		BC4B25B9280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv in Resources */ = {isa = PBXBuildFile; fileRef = BC4B25B8280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */; };
 		BC4B25BC28082D3700719876 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4B25BB28082D3700719876 /* Repository.swift */; };
 		BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */; };
@@ -36,6 +37,7 @@
 		56DC3E3A27B2BAC10095E297 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56DC3E3D27B2BAC10095E297 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56DC3E3F27B2BAC10095E297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC21DDB3280D5E6500EB7ADD /* ExtensionReactorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionReactorViewController.swift; sourceTree = "<group>"; };
 		BC4B25B8280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv"; sourceTree = "<group>"; };
 		BC4B25BB28082D3700719876 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */,
 				BC5B7A7D27FEC5B900953C7B /* SizeStyle.swift */,
 				BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */,
+				BC21DDB3280D5E6500EB7ADD /* ExtensionReactorViewController.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				BC5B7A8427FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift in Sources */,
 				BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */,
 				BC5B7A7627FEB07500953C7B /* LocationDataTableViewCell.swift in Sources */,
+				BC21DDB4280D5E6500EB7ADD /* ExtensionReactorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
