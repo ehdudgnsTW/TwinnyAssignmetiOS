@@ -17,12 +17,7 @@ class MainViewController: UIViewController,View {
     var disposeBag: DisposeBag = DisposeBag()
     
     
-    private var isSearching: Bool {
-        let searchController = self.navigationItem.searchController
-        let isActive = searchController?.isActive ?? false
-        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
-        return isActive && isSearchBarHasText
-    }
+    private var isSearching: Bool = false
     
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -58,13 +53,27 @@ class MainViewController: UIViewController,View {
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         reactor.state.map {
+            $0.isSearching
+        }.bind(onNext: { [weak self] in
+            self?.isSearching = $0
+        }).disposed(by: disposeBag)
+        
+        reactor.state.map {
             $0.filterData
         }.bind(to: tableView.rx.items) {
             tablView, row, item in
-            guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
-            else { return LocationDataTableViewCell() }
-            cell.configureSearchingView(item.cityName)
-            return cell
+            if self.isSearching {
+                guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
+                else { return LocationDataTableViewCell() }
+                cell.configureSearchingView(item.cityName)
+                return cell
+            }
+            else {
+                guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
+                else { return FavoriteDataTableViewCell() }
+                cell.configureFavoriteView(item)
+                return cell
+            }
         }.disposed(by: disposeBag)
         
     }
