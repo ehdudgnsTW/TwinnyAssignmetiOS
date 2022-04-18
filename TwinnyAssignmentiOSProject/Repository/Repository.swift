@@ -51,7 +51,7 @@ final class MockRepository: RepositoryProtocol {
                                                            maxTemperature: maxTemperature[Int.random(in: 0..<maxTemperature.count)],
                                                            minTemperature: minTemperature[Int.random(in: 0..<minTemperature.count)],
                                                            cityId: dataArr[i][1],
-                                                           isFavoriet: favorite[Int.random(in: 0..<2)],
+                                                           isFavoriet: false,
                                                            cityName: tmpStr))
                     }
                 }
