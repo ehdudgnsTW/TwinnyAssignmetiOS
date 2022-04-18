@@ -18,6 +18,7 @@ class MainViewReactor: Reactor {
     
     enum Action {
         case setTotalData
+        case favoriteData
         case changeFavorite(FavoriteDataModel,Bool)
         case searchText(String?)
     }
@@ -45,6 +46,12 @@ class MainViewReactor: Reactor {
                 $0.isFavoriet
             }
             return .just(Mutation.favoriteData(favoriteDatas))
+        case .favoriteData:
+            let favoriteDatas = totalData.filter {
+                $0.isFavoriet
+            }
+            return .just(Mutation.favoriteData(favoriteDatas))
+            
         case .searchText(let targetText):
             if let text = targetText, targetText != "" {
                 searchWord = text
