@@ -75,7 +75,7 @@ class LocationDataTableViewCell: UITableViewCell,View {
     func configureSearchingView(_ searchContents: FavoriteDataModel) {
         dataModel = searchContents
         cityName.text = searchContents.cityName
-        favoriteButton.imageSetting(status: searchContents.isFavoriet)
+        imageSetting(favoriteButton, status: searchContents.isFavoriet)
     }
 
 }
