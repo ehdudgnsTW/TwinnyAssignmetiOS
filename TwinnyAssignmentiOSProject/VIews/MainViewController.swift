@@ -76,12 +76,14 @@ class MainViewController: UIViewController,View {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
                 cell.configureSearchingView(item)
+                cell.reactor = reactor
                 return cell
             }
             else {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
                 cell.configureFavoriteView(item)
+                cell.reactor = reactor
                 return cell
             }
         }.disposed(by: disposeBag)

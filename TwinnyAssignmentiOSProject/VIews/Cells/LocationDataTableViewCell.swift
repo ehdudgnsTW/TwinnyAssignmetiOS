@@ -7,8 +7,13 @@
 
 import UIKit
 import SnapKit
+import ReactorKit
 
-class LocationDataTableViewCell: UITableViewCell {
+class LocationDataTableViewCell: UITableViewCell,View {
+    
+    typealias Reactor = MainViewReactor
+    var disposeBag: DisposeBag = DisposeBag()
+    private var dataModel: FavoriteDataModel!
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -30,9 +35,14 @@ class LocationDataTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
   
-    
+    func bind(reactor: MainViewReactor) {
+        favoriteButton.rx.tap.map {
+            Reactor.Action.changeFavorite(self.dataModel, true)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+    }
     
     func configureSearchingView(_ searchContents: FavoriteDataModel) {
+        dataModel = searchContents
         self.addSubview(cityName)
         self.addSubview(favoriteButton)
         

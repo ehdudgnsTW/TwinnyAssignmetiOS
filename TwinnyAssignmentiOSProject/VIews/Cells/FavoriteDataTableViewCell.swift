@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import ReactorKit
 
-class FavoriteDataTableViewCell: UITableViewCell {
+class FavoriteDataTableViewCell: UITableViewCell,View {
+    
+    typealias Reactor = MainViewReactor
+    var disposeBag: DisposeBag = DisposeBag()
+    private var dataModel: FavoriteDataModel!
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -29,6 +34,12 @@ class FavoriteDataTableViewCell: UITableViewCell {
         return button
     }()
 
+    func bind(reactor: MainViewReactor) {
+        favoriteButton.rx.tap.map {
+            Reactor.Action.changeFavorite(self.dataModel, false)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
@@ -36,6 +47,7 @@ class FavoriteDataTableViewCell: UITableViewCell {
     }
     
     func configureFavoriteView(_ favoriteContents: FavoriteDataModel) {
+        dataModel = favoriteContents
         self.addSubview(cityTemperature)
         self.addSubview(cityName)
         self.addSubview(favoriteButton)
