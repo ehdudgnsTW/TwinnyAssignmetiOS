@@ -65,7 +65,7 @@ class MainViewController: UIViewController,View {
             if self.isSearching {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
-                cell.configureSearchingView(item.cityName)
+                cell.configureSearchingView(item)
                 return cell
             }
             else {

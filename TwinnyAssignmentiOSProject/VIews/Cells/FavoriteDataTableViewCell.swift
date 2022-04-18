@@ -25,7 +25,7 @@ class FavoriteDataTableViewCell: UITableViewCell {
     private let favoriteButton: UIButton = {
         let button = UIButton()
         button.imageMoveRight()
-        button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_black"), 30, 30), for: .normal)
+        button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_yellow"), 30, 30), for: .normal)
         return button
     }()
 

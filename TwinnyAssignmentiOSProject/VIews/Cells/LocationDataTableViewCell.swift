@@ -32,11 +32,12 @@ class LocationDataTableViewCell: UITableViewCell {
   
     
     
-    func configureSearchingView(_ searchContents: String) {
+    func configureSearchingView(_ searchContents: FavoriteDataModel) {
         self.addSubview(cityName)
         self.addSubview(favoriteButton)
         
-        cityName.text = searchContents
+        cityName.text = searchContents.cityName
+        favoriteButton.imageSetting(status: searchContents.isFavoriet)
         
         cityName.snp.makeConstraints {
             make in
