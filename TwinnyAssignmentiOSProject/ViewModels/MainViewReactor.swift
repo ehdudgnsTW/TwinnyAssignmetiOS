@@ -17,15 +17,13 @@ class MainViewReactor: Reactor {
     private var searchWord: String = ""
     
     enum Action {
-        case setTotalData
         case favoriteData
         case changeFavorite(FavoriteDataModel,Bool)
         case searchText(String?)
     }
     
     enum Mutation {
-        case favoriteData([FavoriteDataModel])
-        case searchingData([FavoriteDataModel])
+        case filteringData([FavoriteDataModel], Bool)
     }
     
     struct State {
@@ -35,33 +33,30 @@ class MainViewReactor: Reactor {
     
     var initialState: State = State()
     
+    init() {
+        repository.getCSVFileToData().subscribe {
+            data in
+            self.totalData = data
+        }.disposed(by: DisposeBag())
+    }
+    
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .setTotalData:
-            repository.getCSVFileToData().subscribe {
-                data in
-                self.totalData = data
-            }.disposed(by: DisposeBag())
-            let favoriteDatas = totalData.filter {
-                $0.isFavoriet
-            }
-            return .just(Mutation.favoriteData(favoriteDatas))
         case .favoriteData:
             let favoriteDatas = totalData.filter {
                 $0.isFavoriet
             }
-            return .just(Mutation.favoriteData(favoriteDatas))
-            
+            return .just(Mutation.filteringData(favoriteDatas, false))
         case .searchText(let targetText):
             if let text = targetText, targetText != "" {
                 searchWord = text
                 let searchingDatas = totalData.filter {
                     $0.cityName.contains(text)
                 }
-                return .just(Mutation.searchingData(searchingDatas))
+                return .just(Mutation.filteringData(searchingDatas, true))
             }
             else {
-                return .just(Mutation.searchingData(totalData))
+                return .just(Mutation.filteringData(totalData, true))
             }
         case .changeFavorite(let model, let isSearching):
             for i in 0..<totalData.count {
@@ -74,10 +69,10 @@ class MainViewReactor: Reactor {
                     let searchingDatas = totalData.filter {
                         $0.cityName.contains(self.searchWord)
                     }
-                    return .just(Mutation.searchingData(searchingDatas))
+                    return .just(Mutation.filteringData(searchingDatas, true))
                 }
                 else {
-                    return .just(Mutation.searchingData(totalData))
+                    return .just(Mutation.filteringData(totalData, true))
                 }
                 
             }
@@ -85,7 +80,7 @@ class MainViewReactor: Reactor {
                 let favoriteDatas = totalData.filter {
                     $0.isFavoriet
                 }
-                return .just(Mutation.favoriteData(favoriteDatas))
+                return .just(Mutation.filteringData(favoriteDatas, false))
             }
         }
     }
@@ -93,12 +88,8 @@ class MainViewReactor: Reactor {
     func reduce(state: State, mutation: Mutation) -> State {
         var state = state
         switch mutation {
-        case .favoriteData(let array):
-            state.isSearching = false
-            state.filterData = array
-            return state
-        case .searchingData(let array):
-            state.isSearching = true
+        case .filteringData(let array, let isSearching):
+            state.isSearching = isSearching
             state.filterData = array
             return state
         }

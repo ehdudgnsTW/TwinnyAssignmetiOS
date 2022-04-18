@@ -45,7 +45,7 @@ class MainViewController: UIViewController,View {
     
     func bind(reactor: MainViewReactor) {
         self.rx.viewDidLoad.map {
-            Reactor.Action.setTotalData
+            Reactor.Action.favoriteData
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidBeginEditing
