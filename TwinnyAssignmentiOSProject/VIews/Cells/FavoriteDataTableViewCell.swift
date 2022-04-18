@@ -34,27 +34,19 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
         return button
     }()
 
-    func bind(reactor: MainViewReactor) {
-        favoriteButton.rx.tap.map {
-            Reactor.Action.changeFavorite(self.dataModel, false)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureStyle()
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    func configureFavoriteView(_ favoriteContents: FavoriteDataModel) {
-        dataModel = favoriteContents
+    private func configureStyle() {
         self.contentView.addSubview(cityTemperature)
         self.contentView.addSubview(cityName)
         self.contentView.addSubview(favoriteButton)
-        
-        cityName.text = favoriteContents.cityName
-        cityName.textAlignment = .right
-        cityTemperature.text = "\(favoriteContents.currentTemperature)"
         
         favoriteButton.snp.makeConstraints {
             make in
@@ -78,6 +70,26 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
             make.bottom.equalToSuperview().offset(-10)
             make.trailing.equalToSuperview().offset(-25)
         }
+    }
+    
+    func bind(reactor: MainViewReactor) {
+        favoriteButton.rx.tap.map {
+            Reactor.Action.changeFavorite(self.dataModel, false)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+    func configureFavoriteView(_ favoriteContents: FavoriteDataModel) {
+        dataModel = favoriteContents
+        cityName.text = favoriteContents.cityName
+        cityName.textAlignment = .right
+        cityTemperature.text = "\(favoriteContents.currentTemperature)"
+        
     }
 
 }

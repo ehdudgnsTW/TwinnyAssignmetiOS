@@ -35,19 +35,19 @@ class LocationDataTableViewCell: UITableViewCell,View {
         // Configure the view for the selected state
     }
   
-    func bind(reactor: MainViewReactor) {
-        favoriteButton.rx.tap.map {
-            Reactor.Action.changeFavorite(self.dataModel, true)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureStyle()
+        
     }
     
-    func configureSearchingView(_ searchContents: FavoriteDataModel) {
-        dataModel = searchContents
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureStyle() {
         self.contentView.addSubview(cityName)
         self.contentView.addSubview(favoriteButton)
-        
-        cityName.text = searchContents.cityName
-        favoriteButton.imageSetting(status: searchContents.isFavoriet)
         
         cityName.snp.makeConstraints {
             make in
@@ -63,6 +63,19 @@ class LocationDataTableViewCell: UITableViewCell,View {
             make.leading.equalTo(cityName.snp.trailing)
         }
         
+        
+    }
+    
+    func bind(reactor: MainViewReactor) {
+        favoriteButton.rx.tap.map {
+            Reactor.Action.changeFavorite(self.dataModel, true)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+    }
+    
+    func configureSearchingView(_ searchContents: FavoriteDataModel) {
+        dataModel = searchContents
+        cityName.text = searchContents.cityName
+        favoriteButton.imageSetting(status: searchContents.isFavoriet)
     }
 
 }
