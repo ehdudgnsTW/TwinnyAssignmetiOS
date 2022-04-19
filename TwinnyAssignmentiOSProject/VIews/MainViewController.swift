@@ -61,6 +61,12 @@ class MainViewController: UIViewController,View {
             Reactor.Action.favoriteData
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
+        tableView.rx.modelSelected(FavoriteDataModel.self).subscribe(onNext: {
+            model in
+            let vc = FavoriteDetailDataViewController(model: model)
+            self.navigationController?.pushViewController(vc, animated: false)
+        }).disposed(by: disposeBag)
+        
         
         reactor.state.map {
             $0.isSearching
@@ -107,8 +113,6 @@ class MainViewController: UIViewController,View {
     private func configureTableView() {
         
         self.view.addSubview(tableView)
-        
-        tableView.delegate = self
         tableView.register(LocationDataTableViewCell.self, forCellReuseIdentifier: "LocationDataTableViewCell")
         tableView.register(FavoriteDataTableViewCell.self, forCellReuseIdentifier: "FavoriteDataTableViewCell")
         tableView.snp.makeConstraints {
@@ -127,19 +131,5 @@ extension MainViewController: UISearchResultsUpdating {
     }
 }
 
-extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = FavoriteDetailDataViewController()
-        self.navigationController?.pushViewController(vc, animated: false)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if isSearching {
-            return 44
-        }
-        return 100
-
-    }
-}
 
 

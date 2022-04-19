@@ -72,12 +72,27 @@ class FavoriteDetailDataViewController: UIViewController {
         return stackView
     }()
     
+    init(model: FavoriteDataModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.cityName.text = model.cityName
+        self.currentTemperature.text = "\(model.currentTemperature)"
+        self.maxTemperature.text = "\(model.maxTemperature)"
+        self.minTemperature.text = "\(model.minTemperature)"
+        self.favoriteButton.favoriteStateStarImageSetting(status: model.isFavorite)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
 
         // Do any additional setup after loading the view.
     }
+    
     
     private func initView() {
         let view = UIView()
