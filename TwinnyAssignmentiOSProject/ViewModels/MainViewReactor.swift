@@ -34,6 +34,7 @@ class MainViewReactor: Reactor {
     var initialState: State = State()
     
     init() {
+        repository.getCSVFileInit()
         repository.getTotalData().subscribe {
             data in
             self.totalData = data

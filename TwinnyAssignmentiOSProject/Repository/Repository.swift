@@ -12,6 +12,7 @@ protocol RepositoryProtocol {
     var totalData: [FavoriteDataModel] { get set }
     func getTotalData() -> Observable<[FavoriteDataModel]>
     func changeTotalData(totoalData: [FavoriteDataModel])
+    func getCSVFileInit()
 }
 
 final class Repository: RepositoryProtocol {
@@ -24,6 +25,10 @@ final class Repository: RepositoryProtocol {
     
     func getTotalData() -> Observable<[FavoriteDataModel]> {
         return .just(totalData)
+    }
+    
+    func getCSVFileInit() {
+        
     }
 }
 
@@ -56,12 +61,12 @@ final class MockRepository: RepositoryProtocol {
         return .just(totalData)
     }
     
-    //혹시 데이터가 날라갔을때 사용하기 위해서 만들어놓은 함수 입니다. 현재 앱에서는 json파일 만들때 사용하고 그뒤로는 사용을 하고 있지 않습니다.
     func getCSVFileInit() {
         
         let currentTemperature: [Float] = [12,16,18,10,14,13,11,20]
         let maxTemperature: [Float] = [32,24,20,21,23]
         let minTemperature: [Float] = [10,9,8,7,6,5]
+        let encoder = JSONEncoder()
         
         let path = Bundle.main.path(forResource: "기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_", ofType: "csv")!
         do {
@@ -89,7 +94,22 @@ final class MockRepository: RepositoryProtocol {
         } catch {
             print("reading csv file error")
         }
-        changeTotalData(totoalData: totalData)
+        
+        encoder.outputFormatting = .prettyPrinted
+        let jsonData = try? encoder.encode(self.totalData)
+        if let data = jsonData, let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let path = documentDirectory.appendingPathComponent("citys")
+            do {
+                if FileManager.default.fileExists(atPath: path.path) {
+                    print("file existed!!!")
+                }
+                else {
+                    try data.write(to: path)
+                }
+            } catch {
+                print("error")
+            }
+        }
     }
 }
         
