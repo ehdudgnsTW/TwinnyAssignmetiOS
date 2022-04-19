@@ -123,13 +123,4 @@ class MainViewController: UIViewController,View {
     
 }
 
-extension MainViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        tableView.reloadData()
-        print("text:\(text)")
-    }
-}
-
-
 
