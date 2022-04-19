@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import UIKit
 
-struct FavoriteDataModel {
+struct FavoriteDataModel: Codable {
     var currentTemperature: Float
     var maxTemperature: Float
     var minTemperature: Float
     let cityId: String
     var isFavoriet: Bool
     let cityName: String
+    let locationCoordinate: CGPoint
 }
