@@ -34,7 +34,8 @@ class MainViewReactor: Reactor {
     var initialState: State = State()
     
     init() {
-        repository.getCSVFileToData().subscribe {
+        repository.getCSVFileInit()
+        repository.getTotalData().subscribe {
             data in
             self.totalData = data
         }.disposed(by: DisposeBag())
@@ -64,6 +65,7 @@ class MainViewReactor: Reactor {
                     totalData[i].isFavoriet.toggle()
                 }
             }
+            repository.changeTotalData(totoalData: totalData)
             if isSearching {
                 if searchWord != "" {
                     let searchingDatas = totalData.filter {
