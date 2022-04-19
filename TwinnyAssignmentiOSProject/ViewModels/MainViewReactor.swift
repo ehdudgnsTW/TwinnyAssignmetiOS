@@ -64,6 +64,7 @@ class MainViewReactor: Reactor {
                     totalData[i].isFavoriet.toggle()
                 }
             }
+            repository.changeTotalData(totoalData: totalData)
             if isSearching {
                 if searchWord != "" {
                     let searchingDatas = totalData.filter {
