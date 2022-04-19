@@ -83,7 +83,7 @@ final class MockRepository: RepositoryProtocol {
                                                                maxTemperature: maxTemperature[Int.random(in: 0..<maxTemperature.count)],
                                                                minTemperature: minTemperature[Int.random(in: 0..<minTemperature.count)],
                                                                cityId: dataArr[i][1],
-                                                               isFavoriet: false,
+                                                               isFavorite: false,
                                                                cityName: tmpStr,
                                                                locationCoordinate: CGPoint(x: xInt, y: yInt)))
                                          

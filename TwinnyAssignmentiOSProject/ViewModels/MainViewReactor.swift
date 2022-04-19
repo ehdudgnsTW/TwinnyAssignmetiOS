@@ -45,7 +45,7 @@ class MainViewReactor: Reactor {
         switch action {
         case .favoriteData:
             let favoriteDatas = totalData.filter {
-                $0.isFavoriet
+                $0.isFavorite
             }
             return .just(Mutation.filteringData(favoriteDatas, false))
         case .searchText(let targetText):
@@ -62,7 +62,7 @@ class MainViewReactor: Reactor {
         case .changeFavorite(let model, let isSearching):
             for i in 0..<totalData.count {
                 if model.cityId == totalData[i].cityId {
-                    totalData[i].isFavoriet.toggle()
+                    totalData[i].isFavorite.toggle()
                 }
             }
             repository.changeTotalData(totoalData: totalData)
@@ -80,7 +80,7 @@ class MainViewReactor: Reactor {
             }
             else {
                 let favoriteDatas = totalData.filter {
-                    $0.isFavoriet
+                    $0.isFavorite
                 }
                 return .just(Mutation.filteringData(favoriteDatas, false))
             }
