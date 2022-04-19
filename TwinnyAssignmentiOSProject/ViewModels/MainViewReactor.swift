@@ -34,7 +34,7 @@ class MainViewReactor: Reactor {
     var initialState: State = State()
     
     init() {
-        repository.getCSVFileToData().subscribe {
+        repository.getTotalData().subscribe {
             data in
             self.totalData = data
         }.disposed(by: DisposeBag())
