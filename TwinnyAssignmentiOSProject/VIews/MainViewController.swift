@@ -63,7 +63,8 @@ class MainViewController: UIViewController,View {
         
         tableView.rx.modelSelected(FavoriteDataModel.self).subscribe(onNext: {
             model in
-            let vc = FavoriteDetailDataViewController(model: model)
+            let reactor = DetailViewReactor()
+            let vc = FavoriteDetailDataViewController(reactor: reactor, model: model)
             self.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
         
