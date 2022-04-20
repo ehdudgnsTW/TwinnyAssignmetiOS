@@ -84,6 +84,7 @@ class MainViewController: UIViewController,View {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
                 cell.configureSearchingView(item)
+                cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
             }
@@ -91,6 +92,7 @@ class MainViewController: UIViewController,View {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
                 cell.configureFavoriteView(item)
+                cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
             }
