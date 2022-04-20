@@ -44,7 +44,7 @@ class MainViewController: UIViewController,View {
     }
     
     func bind(reactor: MainViewReactor) {
-        self.rx.viewDidLoad.map {
+        self.rx.viewWillAppear.map {
             Reactor.Action.favoriteData
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
