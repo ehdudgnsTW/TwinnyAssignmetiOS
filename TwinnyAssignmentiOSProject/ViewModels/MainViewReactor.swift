@@ -32,17 +32,15 @@ class MainViewReactor: Reactor {
     }
     
     var initialState: State = State()
-    
-    init() {
-        repository.getTotalData().subscribe {
-            data in
-            self.totalData = data
-        }.disposed(by: DisposeBag())
-    }
+
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .favoriteData:
+            repository.getTotalData().subscribe {
+                data in
+                self.totalData = data
+            }.disposed(by: DisposeBag())
             let favoriteDatas = totalData.filter {
                 $0.isFavorite
             }
