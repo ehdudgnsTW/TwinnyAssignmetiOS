@@ -16,7 +16,7 @@ class MainViewController: UIViewController,View {
     typealias Reactor = MainViewReactor
     var disposeBag: DisposeBag = DisposeBag()
     
-    
+    private var placeholder: String? = nil
     private var isSearching: Bool = false
     
     private let tableView: UITableView = {
@@ -50,11 +50,12 @@ class MainViewController: UIViewController,View {
         
         searchController.searchBar.rx.textDidBeginEditing
             .map {
-                Reactor.Action.searchText("")
+                Reactor.Action.searchText(self.placeholder)
             }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.text.map {
-            Reactor.Action.searchText($0)
+            self.placeholder = $0
+            return Reactor.Action.searchText($0)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidEndEditing.map {
