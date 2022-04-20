@@ -54,6 +54,7 @@ class MainViewReactor: Reactor {
                 return .just(Mutation.filteringData(searchingDatas, true))
             }
             else {
+                searchWord = ""
                 return .just(Mutation.filteringData(totalData, true))
             }
         case .changeFavorite(let model, let isSearching):
