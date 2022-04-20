@@ -6,9 +6,15 @@
 //
 
 import UIKit
+import ReactorKit
+import RxSwift
+import RxCocoa
 
-class FavoriteDetailDataViewController: UIViewController {
+class FavoriteDetailDataViewController: UIViewController,View {
 
+    typealias Reactor = DetailViewReactor
+    var disposeBag: DisposeBag = DisposeBag()
+    private var dataModel: FavoriteDataModel!
     
     private let currentTemperature: UILabel = {
         let label = UILabel()
@@ -60,7 +66,6 @@ class FavoriteDetailDataViewController: UIViewController {
     
     private let favoriteButton: UIButton = {
         let button = UIButton()
-        button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_yellow"), 20, 20), for: .normal)
         return button
     }()
     
@@ -72,11 +77,39 @@ class FavoriteDetailDataViewController: UIViewController {
         return stackView
     }()
     
+    init(reactor: Reactor, model: FavoriteDataModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+        self.dataModel = model
+        self.cityName.text = model.cityName
+        self.currentTemperature.text = "\(model.currentTemperature)"
+        self.maxTemperature.text = "\(model.maxTemperature)"
+        self.minTemperature.text = "\(model.minTemperature)"
+        self.favoriteButton.favoriteStateStarImageSetting(status: model.isFavorite)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
 
         // Do any additional setup after loading the view.
+    }
+    
+    func bind(reactor: DetailViewReactor) {
+        favoriteButton.rx.tap.map {
+            Reactor.Action.changeFavorite(self.dataModel)
+        }.bind(to:reactor.action).disposed(by: disposeBag)
+        
+        reactor.state.map {
+            $0.favoriteState
+        }.bind(onNext: {
+            self.favoriteButton.favoriteStateStarImageSetting(status: $0)
+        }).disposed(by: disposeBag)
     }
     
     private func initView() {

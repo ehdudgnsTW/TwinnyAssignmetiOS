@@ -13,7 +13,7 @@ struct FavoriteDataModel: Codable {
     var maxTemperature: Float
     var minTemperature: Float
     let cityId: String
-    var isFavoriet: Bool
+    var isFavorite: Bool
     let cityName: String
     let locationCoordinate: CGPoint
 }

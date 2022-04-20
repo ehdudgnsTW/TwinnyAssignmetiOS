@@ -16,7 +16,7 @@ class MainViewController: UIViewController,View {
     typealias Reactor = MainViewReactor
     var disposeBag: DisposeBag = DisposeBag()
     
-    
+    private var placeholder: String? = nil
     private var isSearching: Bool = false
     
     private let tableView: UITableView = {
@@ -44,23 +44,32 @@ class MainViewController: UIViewController,View {
     }
     
     func bind(reactor: MainViewReactor) {
-        self.rx.viewDidLoad.map {
+        self.rx.viewWillAppear.map {
             Reactor.Action.favoriteData
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidBeginEditing
             .map {
-                Reactor.Action.searchText("")
+                Reactor.Action.searchText(self.placeholder)
             }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.text.map {
-            Reactor.Action.searchText($0)
+            self.placeholder = $0
+            return Reactor.Action.searchText($0)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidEndEditing.map {
             Reactor.Action.favoriteData
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
+        tableView.rx.modelSelected(FavoriteDataModel.self).subscribe(onNext: {
+            model in
+            let reactor = DetailViewReactor()
+            let vc = FavoriteDetailDataViewController(reactor: reactor, model: model)
+            self.navigationController?.pushViewController(vc, animated: false)
+        }).disposed(by: disposeBag)
+        
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
         reactor.state.map {
             $0.isSearching
@@ -76,6 +85,7 @@ class MainViewController: UIViewController,View {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
                 cell.configureSearchingView(item)
+                cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
             }
@@ -83,6 +93,7 @@ class MainViewController: UIViewController,View {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
                 cell.configureFavoriteView(item)
+                cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
             }
@@ -107,39 +118,21 @@ class MainViewController: UIViewController,View {
     private func configureTableView() {
         
         self.view.addSubview(tableView)
-        
-        tableView.delegate = self
         tableView.register(LocationDataTableViewCell.self, forCellReuseIdentifier: "LocationDataTableViewCell")
         tableView.register(FavoriteDataTableViewCell.self, forCellReuseIdentifier: "FavoriteDataTableViewCell")
         tableView.snp.makeConstraints {
             make in
             make.top.trailing.leading.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-}
-
-extension MainViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        tableView.reloadData()
-        print("text:\(text)")
-    }
+    }    
 }
 
 extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = FavoriteDetailDataViewController()
-        self.navigationController?.pushViewController(vc, animated: false)
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if isSearching {
             return 44
         }
         return 100
-
     }
 }
-
 

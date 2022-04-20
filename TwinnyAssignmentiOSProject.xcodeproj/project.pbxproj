@@ -24,6 +24,7 @@
 		BC5B7A8027FED46400953C7B /* MainViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */; };
 		BC5B7A8227FED52D00953C7B /* FavoriteDetailDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A8127FED52D00953C7B /* FavoriteDetailDataViewController.swift */; };
 		BC5B7A8427FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */; };
+		BC703167280F9A5C00847F30 /* DetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC703166280F9A5C00847F30 /* DetailViewReactor.swift */; };
 		EA13861F33DB503C68CED2D4 /* Pods_TwinnyAssignmentiOSProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 552A541D8AD0C413320C047F /* Pods_TwinnyAssignmentiOSProject.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewReactor.swift; sourceTree = "<group>"; };
 		BC5B7A8127FED52D00953C7B /* FavoriteDetailDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDetailDataViewController.swift; sourceTree = "<group>"; };
 		BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Context+Font+Weight+Color.swift"; sourceTree = "<group>"; };
+		BC703166280F9A5C00847F30 /* DetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewReactor.swift; sourceTree = "<group>"; };
 		DCD1195094B63FE2100C79FA /* Pods-TwinnyAssignmentiOSProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwinnyAssignmentiOSProject.debug.xcconfig"; path = "Target Support Files/Pods-TwinnyAssignmentiOSProject/Pods-TwinnyAssignmentiOSProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */,
+				BC703166280F9A5C00847F30 /* DetailViewReactor.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC5B7A8027FED46400953C7B /* MainViewReactor.swift in Sources */,
+				BC703167280F9A5C00847F30 /* DetailViewReactor.swift in Sources */,
 				BC5B7A7A27FEBBDB00953C7B /* FavoriteDataModel.swift in Sources */,
 				56DC3E2F27B2BAC00095E297 /* AppDelegate.swift in Sources */,
 				BC4B25BC28082D3700719876 /* Repository.swift in Sources */,
