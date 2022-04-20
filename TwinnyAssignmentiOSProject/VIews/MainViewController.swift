@@ -67,6 +67,7 @@ class MainViewController: UIViewController,View {
             self.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
         
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
         reactor.state.map {
             $0.isSearching
@@ -119,8 +120,15 @@ class MainViewController: UIViewController,View {
             make in
             make.top.trailing.leading.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
+    }    
 }
 
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if isSearching {
+            return 44
+        }
+        return 100
+    }
+}
 

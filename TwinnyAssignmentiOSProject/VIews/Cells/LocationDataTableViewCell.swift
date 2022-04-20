@@ -23,7 +23,6 @@ class LocationDataTableViewCell: UITableViewCell,View {
     
     private let favoriteButton: UIButton = {
         let button = UIButton()
-        button.imageMoveRight()
         button.setImage(SizeStyle.resizeImage(image: UIImage(named: "star_black"), 20, 20), for: .normal)
         return button
     }()
@@ -54,6 +53,7 @@ class LocationDataTableViewCell: UITableViewCell,View {
             make.top.bottom.equalToSuperview()
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalTo(favoriteButton.snp.leading)
+            make.height.equalTo(44)
         }
         
         favoriteButton.snp.makeConstraints {
