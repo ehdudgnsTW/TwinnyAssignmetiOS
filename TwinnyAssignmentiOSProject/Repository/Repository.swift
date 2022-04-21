@@ -9,26 +9,34 @@ import Foundation
 import RxSwift
 
 protocol RepositoryProtocol {
-    var totalData: [FavoriteDataModel] { get set }
-    func getData(_ id: String?) -> Observable<[FavoriteDataModel]>
+    static var shared: RepositoryProtocol { get }
+    func getData() -> Observable<[FavoriteDataModel]>
+    func changeData(_ cityId: String)
 }
 
 final class Repository: RepositoryProtocol {
     
+    static var shared: RepositoryProtocol = Repository()
+    
+    
     var totalData: [FavoriteDataModel] = []
     
-    func getData(_ id: String?) -> Observable<[FavoriteDataModel]> {
+    func getData() -> Observable<[FavoriteDataModel]> {
         return .just(totalData)
     }
     
+    func changeData(_ cityId: String) {
+        
+    }
     
 }
 
 final class MockRepository: RepositoryProtocol {
     
-    var totalData: [FavoriteDataModel] = []
+    static var shared: RepositoryProtocol = MockRepository()
+    private var totalData: [FavoriteDataModel] = []
     
-    init() {
+    private init() {
         let currentTemperature: [Float] = [12,16,18,10,14,13,11,20]
         let maxTemperature: [Float] = [32,24,20,21,23]
         let minTemperature: [Float] = [10,9,8,7,6,5]
@@ -76,35 +84,27 @@ final class MockRepository: RepositoryProtocol {
         }
     }
     
-    func getData(_ id: String?) -> Observable<[FavoriteDataModel]>{
-        if let id = id {
-            let encoder = JSONEncoder()
-            for i in 0..<totalData.count {
-                if totalData[i].cityId == id {
-                    totalData[i].isFavorite.toggle()
-                }
-            }
-            encoder.outputFormatting = .prettyPrinted
-            let jsonData = try? encoder.encode(totalData)
-            if let data = jsonData, let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let path = documentDirectory.appendingPathComponent("citys")
-                do {
-                    try data.write(to: path)
-                } catch {
-                    print("write error!!")
-                }
-            }
-        }
-        else {
-            let decoder = JSONDecoder()
-            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let path = documentDirectory.appendingPathComponent("citys")
-                if let data = try? Data(contentsOf: path), let decodingData = try? decoder.decode([FavoriteDataModel].self, from: data) {
-                    self.totalData = decodingData
-                }
-            }
-        }
+    func getData() -> Observable<[FavoriteDataModel]> {
         return .just(totalData)
+    }
+    
+    func changeData(_ cityId: String) {
+        let encoder = JSONEncoder()
+        for i in 0..<totalData.count {
+            if totalData[i].cityId == cityId {
+                totalData[i].isFavorite.toggle()
+            }
+        }
+        encoder.outputFormatting = .prettyPrinted
+        let jsonData = try? encoder.encode(totalData)
+        if let data = jsonData, let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let path = documentDirectory.appendingPathComponent("citys")
+            do {
+                try data.write(to: path)
+            } catch {
+                print("write error!!")
+            }
+        }
     }
 }
         
