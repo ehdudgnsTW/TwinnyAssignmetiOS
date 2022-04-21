@@ -45,46 +45,38 @@ class MainViewController: UIViewController,View {
     
     func bind(reactor: MainViewReactor) {
         self.rx.viewWillAppear.map {
-            Reactor.Action.favoriteData
+            Reactor.Action.filtering(nil, false)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidBeginEditing
             .map {
-                Reactor.Action.searchText(self.placeholder)
+                Reactor.Action.filtering(nil, true)
             }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.text.map {
             self.placeholder = $0
-            return Reactor.Action.searchText($0)
+            return Reactor.Action.filtering($0, true)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidEndEditing.map {
-            Reactor.Action.favoriteData
+            Reactor.Action.filtering(nil, false)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(FavoriteDataModel.self).subscribe(onNext: {
+        tableView.rx.modelSelected(FavoriteDataModel.self).subscribe(onNext: { [unowned self]
             model in
             let reactor = DetailViewReactor()
             let vc = FavoriteDetailDataViewController(reactor: reactor, model: model)
             self.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
-        
-        tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
-        reactor.state.map {
-            $0.isSearching
-        }.bind(onNext: { [weak self] in
-            self?.isSearching = $0
-        }).disposed(by: disposeBag)
-        
+                
         reactor.state.map {
             $0.filterData
         }.bind(to: tableView.rx.items) {
             tablView, row, item in
-            if self.isSearching {
+            if item.isSearching {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
-                cell.configureSearchingView(item)
+                cell.configureSearchingView(item.filteringData)
                 cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
@@ -92,7 +84,7 @@ class MainViewController: UIViewController,View {
             else {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
-                cell.configureFavoriteView(item)
+                cell.configureFavoriteView(item.filteringData)
                 cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
@@ -102,8 +94,6 @@ class MainViewController: UIViewController,View {
     }
     
     private func initView() {
-        let view = UIView()
-        self.view = view
         view.backgroundColor = .white
         configureSearchBar()
         configureTableView()
@@ -127,12 +117,4 @@ class MainViewController: UIViewController,View {
     }    
 }
 
-extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if isSearching {
-            return 44
-        }
-        return 100
-    }
-}
 
