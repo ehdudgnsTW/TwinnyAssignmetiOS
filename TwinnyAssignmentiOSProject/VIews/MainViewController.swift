@@ -50,13 +50,14 @@ class MainViewController: UIViewController,View {
                 Reactor.Action.filtering(self.searchController.searchBar.text, true)
             }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        searchController.searchBar.rx.text.map {
+        searchController.searchBar.rx.text.distinctUntilChanged().map {
             Reactor.Action.filtering($0, true)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        searchController.searchBar.rx.textDidEndEditing.map {
+        searchController.searchBar.rx.cancelButtonClicked.map {
             Reactor.Action.filtering(nil, false)
         }.bind(to: reactor.action).disposed(by: disposeBag)
+    
         
         tableView.rx.modelSelected(MainViewReactor.State.FilterData.self).subscribe(onNext: { [unowned self]
             model in
@@ -106,6 +107,7 @@ class MainViewController: UIViewController,View {
     private func configureTableView() {
         
         self.view.addSubview(tableView)
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(LocationDataTableViewCell.self, forCellReuseIdentifier: "LocationDataTableViewCell")
         tableView.register(FavoriteDataTableViewCell.self, forCellReuseIdentifier: "FavoriteDataTableViewCell")
         tableView.snp.makeConstraints {
