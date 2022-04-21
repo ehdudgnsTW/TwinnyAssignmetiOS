@@ -14,7 +14,6 @@ class FavoriteDetailDataViewController: UIViewController,View {
 
     typealias Reactor = DetailViewReactor
     var disposeBag: DisposeBag = DisposeBag()
-    private var dataModel: FavoriteDataModel!
     
     private let currentTemperature: UILabel = {
         let label = UILabel()
@@ -77,15 +76,9 @@ class FavoriteDetailDataViewController: UIViewController,View {
         return stackView
     }()
     
-    init(reactor: Reactor, model: FavoriteDataModel) {
+    init(reactor: Reactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
-        self.dataModel = model
-        self.cityName.text = model.cityName
-        self.currentTemperature.text = "\(model.currentTemperature)"
-        self.maxTemperature.text = "\(model.maxTemperature)"
-        self.minTemperature.text = "\(model.minTemperature)"
-        self.favoriteButton.favoriteStateStarImageSetting(status: model.isFavorite)
     }
     
     required init?(coder: NSCoder) {
@@ -96,26 +89,38 @@ class FavoriteDetailDataViewController: UIViewController,View {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
-
-        // Do any additional setup after loading the view.
     }
+    
     
     func bind(reactor: DetailViewReactor) {
         favoriteButton.rx.tap.map {
-            Reactor.Action.changeFavorite(self.dataModel)
+            Reactor.Action.changeFavorite
         }.bind(to:reactor.action).disposed(by: disposeBag)
         
         reactor.state.map {
-            $0.favoriteState
+            $0.dataModel.cityName
+        }.bind(to: cityName.rx.text).disposed(by: disposeBag)
+        
+        reactor.state.map {
+            "\($0.dataModel.currentTemperature)"
+        }.bind(to: currentTemperature.rx.text).disposed(by: disposeBag)
+        
+        reactor.state.map {
+            "\($0.dataModel.maxTemperature)"
+        }.bind(to: maxTemperature.rx.text).disposed(by: disposeBag)
+        
+        reactor.state.map {
+            "\($0.dataModel.minTemperature)"
+        }.bind(to: minTemperature.rx.text).disposed(by: disposeBag)
+        
+        reactor.state.map {
+            $0.dataModel.isFavorite
         }.bind(onNext: {
             self.favoriteButton.favoriteStateStarImageSetting(status: $0)
         }).disposed(by: disposeBag)
     }
     
     private func initView() {
-        let view = UIView()
-        self.view = view
-        
         view.backgroundColor = .white
         configureConstraints()
     }
