@@ -10,14 +10,14 @@ import RxSwift
 
 protocol RepositoryProtocol {
     var totalData: [FavoriteDataModel] { get set }
-    func getData(_ model: FavoriteDataModel?) -> Observable<[FavoriteDataModel]>
+    func getData(_ id: String?) -> Observable<[FavoriteDataModel]>
 }
 
 final class Repository: RepositoryProtocol {
     
     var totalData: [FavoriteDataModel] = []
     
-    func getData(_ model: FavoriteDataModel?) -> Observable<[FavoriteDataModel]> {
+    func getData(_ id: String?) -> Observable<[FavoriteDataModel]> {
         return .just(totalData)
     }
     
@@ -36,7 +36,6 @@ final class MockRepository: RepositoryProtocol {
         let decoder = JSONDecoder()
         if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let path = documentDirectory.appendingPathComponent("citys")
-            print(path)
             if FileManager.default.fileExists(atPath: path.path), let data = try? Data(contentsOf: path), let decodingData = try? decoder.decode([FavoriteDataModel].self, from: data) {
                 self.totalData = decodingData
             }
@@ -77,11 +76,11 @@ final class MockRepository: RepositoryProtocol {
         }
     }
     
-    func getData(_ model: FavoriteDataModel?) -> Observable<[FavoriteDataModel]>{
-        if let model = model {
+    func getData(_ id: String?) -> Observable<[FavoriteDataModel]>{
+        if let id = id {
             let encoder = JSONEncoder()
             for i in 0..<totalData.count {
-                if totalData[i].cityId == model.cityId {
+                if totalData[i].cityId == id {
                     totalData[i].isFavorite.toggle()
                 }
             }
@@ -93,6 +92,15 @@ final class MockRepository: RepositoryProtocol {
                     try data.write(to: path)
                 } catch {
                     print("write error!!")
+                }
+            }
+        }
+        else {
+            let decoder = JSONDecoder()
+            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                let path = documentDirectory.appendingPathComponent("citys")
+                if let data = try? Data(contentsOf: path), let decodingData = try? decoder.decode([FavoriteDataModel].self, from: data) {
+                    self.totalData = decodingData
                 }
             }
         }

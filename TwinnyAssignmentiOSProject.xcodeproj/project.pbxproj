@@ -15,6 +15,7 @@
 		BC21DDB4280D5E6500EB7ADD /* ExtensionReactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC21DDB3280D5E6500EB7ADD /* ExtensionReactorViewController.swift */; };
 		BC4B25B9280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv in Resources */ = {isa = PBXBuildFile; fileRef = BC4B25B8280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */; };
 		BC4B25BC28082D3700719876 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4B25BB28082D3700719876 /* Repository.swift */; };
+		BC4EA2E32810CE05006D2A64 /* CellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4EA2E22810CE05006D2A64 /* CellReactor.swift */; };
 		BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */; };
 		BC5B7A7427FEACEE00953C7B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7327FEACEE00953C7B /* MainViewController.swift */; };
 		BC5B7A7627FEB07500953C7B /* LocationDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */; };
@@ -41,6 +42,7 @@
 		BC21DDB3280D5E6500EB7ADD /* ExtensionReactorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionReactorViewController.swift; sourceTree = "<group>"; };
 		BC4B25B8280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv"; sourceTree = "<group>"; };
 		BC4B25BB28082D3700719876 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		BC4EA2E22810CE05006D2A64 /* CellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellReactor.swift; sourceTree = "<group>"; };
 		BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		BC5B7A7327FEACEE00953C7B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataTableViewCell.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			children = (
 				BC5B7A7F27FED46400953C7B /* MainViewReactor.swift */,
 				BC703166280F9A5C00847F30 /* DetailViewReactor.swift */,
+				BC4EA2E22810CE05006D2A64 /* CellReactor.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				BC5B7A7E27FEC5B900953C7B /* SizeStyle.swift in Sources */,
 				BC5B7A7427FEACEE00953C7B /* MainViewController.swift in Sources */,
 				BC5B7A8427FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift in Sources */,
+				BC4EA2E32810CE05006D2A64 /* CellReactor.swift in Sources */,
 				BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */,
 				BC5B7A7627FEB07500953C7B /* LocationDataTableViewCell.swift in Sources */,
 				BC21DDB4280D5E6500EB7ADD /* ExtensionReactorViewController.swift in Sources */,
