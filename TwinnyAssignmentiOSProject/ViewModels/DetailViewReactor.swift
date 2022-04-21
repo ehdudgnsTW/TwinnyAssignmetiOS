@@ -11,7 +11,7 @@ import RxSwift
 
 class DetailViewReactor: Reactor {
     
-    private var repository: RepositoryProtocol = MockRepository()
+    private var repository = MockRepository.shared
     
     enum Action {
         case changeFavorite
@@ -34,7 +34,7 @@ class DetailViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .changeFavorite:
-            let _ = repository.getData(initialState.dataModel.cityId)
+            repository.changeData(initialState.dataModel.cityId)
             return .just(.changeFavoriteState)
         }
     }
