@@ -13,9 +13,11 @@ import UIKit
 class MainViewReactor: Reactor {
     
     private let repository = MockRepository()
+    private var searchWord: String = ""
     
     enum Action {
         case filtering(String?, Bool)
+        case changeFavoriteStatus(String, Bool)
     }
     
     enum Mutation {
@@ -39,11 +41,13 @@ class MainViewReactor: Reactor {
         case .filtering(let text, let isSearching):
             if isSearching {
                 if let text = text, text != "" {
+                    self.searchWord = text
                     return repository.getData(nil)
                         .map { $0.filter { $0.cityName.contains(text) } }
                         .map { .filteringData($0, true) }
                 }
                 else {
+                    self.searchWord = ""
                     return repository.getData(nil)
                         .map { $0 }
                         .map { .filteringData($0, true) }
@@ -54,6 +58,22 @@ class MainViewReactor: Reactor {
                     .map { $0.filter(\.isFavorite) }
                     .map { .filteringData($0, false) }
             }
+        case .changeFavoriteStatus(let id, let isSearching):
+            if isSearching {
+                if self.searchWord != "" {
+                    return repository.getData(id)
+                        .map { $0.filter { $0.cityName.contains(self.searchWord) } }
+                        .map { .filteringData($0, true) }
+                }
+                else {
+                    return repository.getData(id)
+                        .map { $0 }
+                        .map { .filteringData($0, true) }
+                }
+            }
+            return repository.getData(id)
+                .map { $0.filter(\.isFavorite) }
+                .map { .filteringData($0, false) }
         }
     }
     
