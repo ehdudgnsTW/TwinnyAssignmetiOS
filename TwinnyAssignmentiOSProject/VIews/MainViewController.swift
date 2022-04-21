@@ -16,9 +16,6 @@ class MainViewController: UIViewController,View {
     typealias Reactor = MainViewReactor
     var disposeBag: DisposeBag = DisposeBag()
     
-    private var placeholder: String? = nil
-    private var isSearching: Bool = false
-    
     private let tableView: UITableView = {
         let tableView = UITableView()
         return tableView
@@ -50,22 +47,21 @@ class MainViewController: UIViewController,View {
         
         searchController.searchBar.rx.textDidBeginEditing
             .map {
-                Reactor.Action.filtering(nil, true)
+                Reactor.Action.filtering(self.searchController.searchBar.text, true)
             }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.text.map {
-            self.placeholder = $0
-            return Reactor.Action.filtering($0, true)
+            Reactor.Action.filtering($0, true)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
         searchController.searchBar.rx.textDidEndEditing.map {
             Reactor.Action.filtering(nil, false)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(FavoriteDataModel.self).subscribe(onNext: { [unowned self]
+        tableView.rx.modelSelected(MainViewReactor.State.FilterData.self).subscribe(onNext: { [unowned self]
             model in
-            let reactor = DetailViewReactor()
-            let vc = FavoriteDetailDataViewController(reactor: reactor, model: model)
+            let reactor = DetailViewReactor(model: model.filteringData)
+            let vc = FavoriteDetailDataViewController(reactor: reactor)
             self.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
                 
@@ -76,7 +72,8 @@ class MainViewController: UIViewController,View {
             if item.isSearching {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
-                cell.configureSearchingView(item.filteringData)
+                let cellReactor = CellReactor(model: item.filteringData)
+                cell.configureDataView(reactor: cellReactor)
                 cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
@@ -84,7 +81,8 @@ class MainViewController: UIViewController,View {
             else {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
-                cell.configureFavoriteView(item.filteringData)
+                let cellReactor = CellReactor(model: item.filteringData)
+                cell.configureDataView(reactor: cellReactor)
                 cell.selectionStyle = .none
                 cell.reactor = reactor
                 return cell
