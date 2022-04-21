@@ -11,8 +11,8 @@ import ReactorKit
 class FavoriteDataTableViewCell: UITableViewCell,View {
     
     typealias Reactor = MainViewReactor
+    private var cellReactor: CellReactor!
     var disposeBag: DisposeBag = DisposeBag()
-    private var dataModel: FavoriteDataModel!
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -74,22 +74,19 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
     
     func bind(reactor: MainViewReactor) {
         favoriteButton.rx.tap.map {
-            Reactor.Action.changeFavorite(self.dataModel, false)
+            Reactor.Action.changeFavoriteStatus(self.cellReactor.cityId, false)
         }.bind(to: reactor.action).disposed(by: disposeBag)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
-    func configureFavoriteView(_ favoriteContents: FavoriteDataModel) {
-        dataModel = favoriteContents
-        cityName.text = favoriteContents.cityName
+    func configureDataView(reactor: CellReactor) {
+        self.cellReactor = reactor
+        cityName.text = reactor.cityName
         cityName.textAlignment = .right
-        cityTemperature.text = "\(favoriteContents.currentTemperature)"
+        cityTemperature.text = reactor.currentTemperature
         
     }
-
 }

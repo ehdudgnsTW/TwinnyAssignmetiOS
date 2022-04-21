@@ -13,7 +13,7 @@ class LocationDataTableViewCell: UITableViewCell,View {
     
     typealias Reactor = MainViewReactor
     var disposeBag: DisposeBag = DisposeBag()
-    private var dataModel: FavoriteDataModel!
+    private var cellReactor: CellReactor!
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -48,12 +48,16 @@ class LocationDataTableViewCell: UITableViewCell,View {
         self.contentView.addSubview(cityName)
         self.contentView.addSubview(favoriteButton)
         
+        self.contentView.snp.makeConstraints {
+            $0.height.equalTo(44)
+            $0.leading.trailing.top.equalToSuperview()
+        }
+        
         cityName.snp.makeConstraints {
             make in
-            make.top.bottom.equalToSuperview()
+            make.top.bottom.equalTo(contentView.safeAreaLayoutGuide)
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalTo(favoriteButton.snp.leading)
-            make.height.equalTo(44)
         }
         
         favoriteButton.snp.makeConstraints {
@@ -61,6 +65,7 @@ class LocationDataTableViewCell: UITableViewCell,View {
             make.top.bottom.equalToSuperview()
             make.trailing.equalToSuperview().offset(-10)
             make.leading.equalTo(cityName.snp.trailing)
+            make.width.equalTo(44)
         }
         
         
@@ -68,14 +73,14 @@ class LocationDataTableViewCell: UITableViewCell,View {
     
     func bind(reactor: MainViewReactor) {
         favoriteButton.rx.tap.map {
-            Reactor.Action.changeFavorite(self.dataModel, true)
+            Reactor.Action.changeFavoriteStatus(self.cellReactor.cityId, true)
         }.bind(to: reactor.action).disposed(by: disposeBag)
     }
     
-    func configureSearchingView(_ searchContents: FavoriteDataModel) {
-        dataModel = searchContents
-        cityName.text = searchContents.cityName
-        favoriteButton.favoriteStateStarImageSetting(status: searchContents.isFavorite)
+    func configureDataView(reactor: CellReactor) {
+        self.cellReactor = reactor
+        cityName.text = reactor.cityName
+        favoriteButton.favoriteStateStarImageSetting(status: reactor.isFavorite)
+        
     }
-
 }
