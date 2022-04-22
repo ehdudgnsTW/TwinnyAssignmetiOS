@@ -6,17 +6,14 @@
 //
 
 import Foundation
+import ReactorKit
 
-struct CellReactor {
-    var cityName: String
-    var cityId: String
-    var currentTemperature: String
-    var isFavorite: Bool
+
+class CellReactor: Reactor {
+   typealias Action = NoAction
+    var initialState: FavoriteDataModel
     
-    init(model: FavoriteDataModel) {
-        self.cityName = model.cityName
-        self.cityId = model.cityId
-        self.currentTemperature = "\(model.currentTemperature)"
-        self.isFavorite = model.isFavorite
+    init(_ state: FavoriteDataModel) {
+        self.initialState = state
     }
 }
