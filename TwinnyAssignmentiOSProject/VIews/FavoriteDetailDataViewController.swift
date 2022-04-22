@@ -97,27 +97,27 @@ class FavoriteDetailDataViewController: UIViewController,View {
             Reactor.Action.changeFavorite
         }.bind(to:reactor.action).disposed(by: disposeBag)
         
-        reactor.state.map {
-            $0.dataModel.cityName
-        }.bind(to: cityName.rx.text).disposed(by: disposeBag)
+        let sharedDataModel = reactor.state.map(\.dataModel).share()
         
-        reactor.state.map {
-            "\($0.dataModel.currentTemperature)"
-        }.bind(to: currentTemperature.rx.text).disposed(by: disposeBag)
+        sharedDataModel.map(\.cityName)
+            .bind(to: cityName.rx.text)
+            .disposed(by: disposeBag)
         
-        reactor.state.map {
-            "\($0.dataModel.maxTemperature)"
-        }.bind(to: maxTemperature.rx.text).disposed(by: disposeBag)
+        sharedDataModel.map(\.currentTemperature.description)
+            .bind(to: currentTemperature.rx.text)
+            .disposed(by: disposeBag)
         
-        reactor.state.map {
-            "\($0.dataModel.minTemperature)"
-        }.bind(to: minTemperature.rx.text).disposed(by: disposeBag)
+        sharedDataModel.map(\.maxTemperature.description)
+            .bind(to: maxTemperature.rx.text)
+            .disposed(by: disposeBag)
         
-        reactor.state.map {
-            $0.dataModel.isFavorite
-        }.bind(onNext: {
-            self.favoriteButton.favoriteStateStarImageSetting(status: $0)
-        }).disposed(by: disposeBag)
+        sharedDataModel.map(\.minTemperature.description)
+            .bind(to: minTemperature.rx.text)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.dataModel.isFavorite }
+            .bind(onNext: { self.favoriteButton.favoriteStateStarImageSetting(status: $0) })
+            .disposed(by: disposeBag)
     }
     
     private func initView() {
