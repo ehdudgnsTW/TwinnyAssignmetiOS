@@ -11,9 +11,9 @@ import ReactorKit
 
 class LocationDataTableViewCell: UITableViewCell,View {
     
-    typealias Reactor = MainViewReactor
+    typealias Reactor = CellReactor
     var disposeBag: DisposeBag = DisposeBag()
-    private var cellReactor: CellReactor!
+    weak var delegate: FavoriteDelegate?
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -71,16 +71,12 @@ class LocationDataTableViewCell: UITableViewCell,View {
         
     }
     
-    func bind(reactor: MainViewReactor) {
-        favoriteButton.rx.tap.map {
-            Reactor.Action.changeFavoriteStatus(self.cellReactor.cityId, true)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
-    }
-    
-    func configureDataView(reactor: CellReactor) {
-        self.cellReactor = reactor
-        cityName.text = reactor.cityName
-        favoriteButton.favoriteStateStarImageSetting(status: reactor.isFavorite)
+    func bind(reactor: CellReactor) {
+        cityName.text = reactor.initialState.cityName
+        favoriteButton.favoriteStateStarImageSetting(status: reactor.initialState.isFavorite)
         
+        favoriteButton.rx.tap.subscribe (onNext: { [weak self] in
+            self?.delegate?.changeFavoriteState(reactor.initialState.cityId,true)
+        }).disposed(by: disposeBag)
     }
 }
