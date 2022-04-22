@@ -11,7 +11,12 @@ import RxSwift
 import ReactorKit
 import RxCocoa
 
-class MainViewController: UIViewController,View {
+@objc
+protocol FavoriteDelegate {
+    @objc func changeFavoriteState(_ cityId: String, _ status: Bool) -> [Any]
+}
+
+class MainViewController: UIViewController,View,FavoriteDelegate {
     
     typealias Reactor = MainViewReactor
     var disposeBag: DisposeBag = DisposeBag()
@@ -45,6 +50,10 @@ class MainViewController: UIViewController,View {
             Reactor.Action.filtering(nil, false)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
+        self.rx.reloadTableView.map {
+            Reactor.Action.changeFavoriteStatus($0[0] as! String, $0[1] as! Bool)
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+        
         searchController.searchBar.rx.textDidBeginEditing
             .map {
                 Reactor.Action.filtering(self.searchController.searchBar.text, true)
@@ -73,23 +82,27 @@ class MainViewController: UIViewController,View {
             if item.isSearching {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
-                let cellReactor = CellReactor(model: item.filteringData)
-                cell.configureDataView(reactor: cellReactor)
+                let cellReactor = CellReactor(item.filteringData)
                 cell.selectionStyle = .none
-                cell.reactor = reactor
+                cell.delegate = self
+                cell.reactor = cellReactor
                 return cell
             }
             else {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
-                let cellReactor = CellReactor(model: item.filteringData)
-                cell.configureDataView(reactor: cellReactor)
+                let cellReactor = CellReactor(item.filteringData)
                 cell.selectionStyle = .none
-                cell.reactor = reactor
+                cell.reactor = cellReactor
+                cell.delegate = self
                 return cell
             }
         }.disposed(by: disposeBag)
         
+    }
+    
+    @objc func changeFavoriteState(_ cityId: String, _ status: Bool) -> [Any] {
+        return [cityId,status]
     }
     
     private func initView() {
@@ -117,4 +130,11 @@ class MainViewController: UIViewController,View {
     }    
 }
 
-
+extension Reactive where Base: MainViewController {
+    var reloadTableView: ControlEvent<[Any]> {
+        let source = self.methodInvoked(#selector(Base.changeFavoriteState)).map { data in
+            data
+        }
+        return ControlEvent(events: source)
+    }
+}
