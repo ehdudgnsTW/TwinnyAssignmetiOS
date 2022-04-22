@@ -50,7 +50,7 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
             Reactor.Action.filtering(nil, false)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        self.rx.reloadTableView.map {
+        self.rx.updateFavoriteDatas.map {
             Reactor.Action.changeFavoriteStatus($0[0] as! String, $0[1] as! Bool)
         }.bind(to: reactor.action).disposed(by: disposeBag)
         
@@ -131,7 +131,7 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
 }
 
 extension Reactive where Base: MainViewController {
-    var reloadTableView: ControlEvent<[Any]> {
+    var updateFavoriteDatas: ControlEvent<[Any]> {
         let source = self.methodInvoked(#selector(Base.changeFavoriteState)).map { data in
             data
         }
