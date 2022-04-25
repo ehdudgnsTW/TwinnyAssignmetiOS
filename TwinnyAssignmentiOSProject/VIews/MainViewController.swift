@@ -12,7 +12,6 @@ import ReactorKit
 import RxCocoa
 
 protocol FavoriteDelegate: NSObject {
-    var isSearching:Bool { get set }
     func changeFavoriteState(_ cityId: String, _ status: Bool)
 }
 
@@ -20,7 +19,6 @@ protocol FavoriteDelegate: NSObject {
 class MainViewController: UIViewController,View,FavoriteDelegate {
     
     typealias Reactor = MainViewReactor
-    var isSearching: Bool = false
     var disposeBag: DisposeBag = DisposeBag()
     
     private let tableView: UITableView = {
@@ -48,22 +46,19 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
     }
     
     func bind(reactor: MainViewReactor) {
-        
         self.rx.viewWillAppear.withLatestFrom(searchController.searchBar.rx.text)
-            .map { .filtering($0, $0?.isEmpty == false || self.isSearching) }
+            .map { .filtering($0, $0?.isEmpty == false || self.searchController.isActive) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         
         searchController.rx.willPresent
             .map { .filtering(nil, true) }
-            .debug()
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         searchController.rx.willDismiss
             .map { .filtering(nil, false) }
-            .debug()
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -76,9 +71,8 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
         
         tableView.rx.modelSelected(CellReactor.self).subscribe(onNext: { [unowned self]
             model in
-            let reactor = DetailViewReactor(model: model.initialState.dataModel)
-            let vc = FavoriteDetailDataViewController(reactor: reactor, isSearching: model.initialState.isSearching)
-            vc.delegate = self
+            let reactor = DetailViewReactor(model: model.initialState)
+            let vc = FavoriteDetailDataViewController(reactor: reactor)
             self.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
            
@@ -89,7 +83,7 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
         }.bind(to: tableView.rx.items) {
             tablView, row, item in
             let cellReactor = item
-            if cellReactor.initialState.isSearching {
+            if cellReactor.isSearching {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
                 cell.selectionStyle = .none
