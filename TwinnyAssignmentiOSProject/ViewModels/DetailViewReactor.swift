@@ -11,51 +11,40 @@ import RxSwift
 
 class DetailViewReactor: Reactor {
     
-    private var repository: RepositoryProtocol = MockRepository()
-    private var totalData: [FavoriteDataModel] = []
+    private var repository = MockRepository.shared
     
     enum Action {
-        case changeFavorite(FavoriteDataModel)
+        case changeFavorite
     }
     
     enum Mutation {
-        case changeFavoriteState(Bool)
+        case changeFavoriteState
     }
     
     struct State {
-        var favoriteState: Bool = true
+        var dataModel: FavoriteDataModel
     }
     
-    var initialState: State = State()
+    var initialState: State
     
-    init() {
-        repository.getTotalData().subscribe {
-            data in
-            self.totalData = data
-        }.disposed(by: DisposeBag())
+    init(model: FavoriteDataModel) {
+        self.initialState = State(dataModel: model)
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .changeFavorite(let model):
-            var status: Bool = true
-            for i in 0..<totalData.count {
-                if totalData[i].cityId == model.cityId {
-                    totalData[i].isFavorite.toggle()
-                    status = totalData[i].isFavorite
-                }
-            }
-            repository.changeTotalData(totoalData: totalData)
-            return .just(Mutation.changeFavoriteState(status))
+        case .changeFavorite:
+            repository.changeData(initialState.dataModel.cityId)
+            return .just(.changeFavoriteState)
         }
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
         var state = state
         switch mutation {
-        case .changeFavoriteState(let status):
-            state.favoriteState = status
+        case .changeFavoriteState:
+            state.dataModel.isFavorite.toggle()
+            return state
         }
-        return state
     }
 }

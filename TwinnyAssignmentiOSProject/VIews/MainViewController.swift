@@ -11,13 +11,15 @@ import RxSwift
 import ReactorKit
 import RxCocoa
 
-class MainViewController: UIViewController,View {
+protocol FavoriteDelegate: NSObject {
+    func changeFavoriteState(_ cityId: String, _ status: Bool)
+}
+
+
+class MainViewController: UIViewController,View,FavoriteDelegate {
     
     typealias Reactor = MainViewReactor
     var disposeBag: DisposeBag = DisposeBag()
-    
-    private var placeholder: String? = nil
-    private var isSearching: Bool = false
     
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -44,66 +46,69 @@ class MainViewController: UIViewController,View {
     }
     
     func bind(reactor: MainViewReactor) {
-        self.rx.viewWillAppear.map {
-            Reactor.Action.favoriteData
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+        self.rx.viewWillAppear.withLatestFrom(searchController.searchBar.rx.text)
+            .map { .filtering($0, $0?.isEmpty == false || self.searchController.isActive) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        searchController.searchBar.rx.textDidBeginEditing
-            .map {
-                Reactor.Action.searchText(self.placeholder)
-            }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        searchController.searchBar.rx.text.map {
-            self.placeholder = $0
-            return Reactor.Action.searchText($0)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+        searchController.rx.willPresent
+            .map { .filtering(nil, true) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        searchController.searchBar.rx.textDidEndEditing.map {
-            Reactor.Action.favoriteData
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+        searchController.rx.willDismiss
+            .map { .filtering(nil, false) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(FavoriteDataModel.self).subscribe(onNext: {
+        searchController.rx.willPresent
+            .flatMapLatest { [unowned self] in
+                return self.searchController.searchBar.rx.text.distinctUntilChanged()
+                    .take(until: self.searchController.rx.willDismiss)
+            }.map { .filtering($0, true) }
+            .bind(to: reactor.action).disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(CellReactor.self).subscribe(onNext: { [unowned self]
             model in
-            let reactor = DetailViewReactor()
-            let vc = FavoriteDetailDataViewController(reactor: reactor, model: model)
+            let reactor = DetailViewReactor(model: model.initialState)
+            let vc = FavoriteDetailDataViewController(reactor: reactor)
             self.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
+           
         
-        tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
-        reactor.state.map {
-            $0.isSearching
-        }.bind(onNext: { [weak self] in
-            self?.isSearching = $0
-        }).disposed(by: disposeBag)
         
         reactor.state.map {
             $0.filterData
         }.bind(to: tableView.rx.items) {
             tablView, row, item in
-            if self.isSearching {
+            let cellReactor = item
+            if cellReactor.isSearching {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
-                cell.configureSearchingView(item)
                 cell.selectionStyle = .none
-                cell.reactor = reactor
+                cell.delegate = self
+                cell.reactor = cellReactor
                 return cell
             }
             else {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
-                cell.configureFavoriteView(item)
                 cell.selectionStyle = .none
-                cell.reactor = reactor
+                cell.reactor = cellReactor
+                cell.delegate = self
                 return cell
             }
         }.disposed(by: disposeBag)
         
     }
     
+    func changeFavoriteState(_ cityId: String, _ status: Bool) {
+        reactor?.action.onNext(.changeFavoriteStatus(cityId, status))
+        
+    }
+    
     private func initView() {
-        let view = UIView()
-        self.view = view
         view.backgroundColor = .white
         configureSearchBar()
         configureTableView()
@@ -118,6 +123,7 @@ class MainViewController: UIViewController,View {
     private func configureTableView() {
         
         self.view.addSubview(tableView)
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(LocationDataTableViewCell.self, forCellReuseIdentifier: "LocationDataTableViewCell")
         tableView.register(FavoriteDataTableViewCell.self, forCellReuseIdentifier: "FavoriteDataTableViewCell")
         tableView.snp.makeConstraints {
@@ -125,14 +131,5 @@ class MainViewController: UIViewController,View {
             make.top.trailing.leading.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }    
-}
-
-extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if isSearching {
-            return 44
-        }
-        return 100
-    }
 }
 

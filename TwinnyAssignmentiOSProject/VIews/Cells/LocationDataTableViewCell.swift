@@ -11,9 +11,9 @@ import ReactorKit
 
 class LocationDataTableViewCell: UITableViewCell,View {
     
-    typealias Reactor = MainViewReactor
+    typealias Reactor = CellReactor
     var disposeBag: DisposeBag = DisposeBag()
-    private var dataModel: FavoriteDataModel!
+    weak var delegate: FavoriteDelegate?
 
     private let cityName: UILabel = {
         let label = UILabel()
@@ -45,15 +45,18 @@ class LocationDataTableViewCell: UITableViewCell,View {
     }
     
     private func configureStyle() {
+        
         self.contentView.addSubview(cityName)
         self.contentView.addSubview(favoriteButton)
+        
+        cityName.translatesAutoresizingMaskIntoConstraints = false
         
         cityName.snp.makeConstraints {
             make in
             make.top.bottom.equalToSuperview()
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalTo(favoriteButton.snp.leading)
-            make.height.equalTo(44)
+            make.height.equalTo(44).priority(.high)
         }
         
         favoriteButton.snp.makeConstraints {
@@ -61,21 +64,18 @@ class LocationDataTableViewCell: UITableViewCell,View {
             make.top.bottom.equalToSuperview()
             make.trailing.equalToSuperview().offset(-10)
             make.leading.equalTo(cityName.snp.trailing)
+            make.width.equalTo(40)
         }
         
         
     }
     
-    func bind(reactor: MainViewReactor) {
-        favoriteButton.rx.tap.map {
-            Reactor.Action.changeFavorite(self.dataModel, true)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+    func bind(reactor: CellReactor) {
+        cityName.text = reactor.initialState.cityName
+        favoriteButton.favoriteStateStarImageSetting(status: reactor.initialState.isFavorite)
+        
+        favoriteButton.rx.tap.subscribe (onNext: { [weak self] in
+            self?.delegate?.changeFavoriteState(reactor.initialState.cityId,true)
+        }).disposed(by: disposeBag)
     }
-    
-    func configureSearchingView(_ searchContents: FavoriteDataModel) {
-        dataModel = searchContents
-        cityName.text = searchContents.cityName
-        favoriteButton.favoriteStateStarImageSetting(status: searchContents.isFavorite)
-    }
-
 }
