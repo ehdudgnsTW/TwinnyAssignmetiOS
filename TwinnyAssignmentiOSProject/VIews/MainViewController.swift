@@ -11,14 +11,16 @@ import RxSwift
 import ReactorKit
 import RxCocoa
 
-@objc
-protocol FavoriteDelegate {
-    @objc func changeFavoriteState(_ cityId: String, _ status: Bool) -> [Any]
+protocol FavoriteDelegate: NSObject {
+    var isSearching:Bool { get set }
+    func changeFavoriteState(_ cityId: String, _ status: Bool)
 }
+
 
 class MainViewController: UIViewController,View,FavoriteDelegate {
     
     typealias Reactor = MainViewReactor
+    var isSearching: Bool = false
     var disposeBag: DisposeBag = DisposeBag()
     
     private let tableView: UITableView = {
@@ -46,43 +48,50 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
     }
     
     func bind(reactor: MainViewReactor) {
-        self.rx.viewWillAppear.map {
-            Reactor.Action.filtering(nil, false)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        self.rx.updateFavoriteDatas.map {
-            Reactor.Action.changeFavoriteStatus($0[0] as! String, $0[1] as! Bool)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+        self.rx.viewWillAppear.withLatestFrom(searchController.searchBar.rx.text)
+            .map { .filtering($0, $0?.isEmpty == false || self.isSearching) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        searchController.searchBar.rx.textDidBeginEditing
-            .map {
-                Reactor.Action.filtering(self.searchController.searchBar.text, true)
-            }.bind(to: reactor.action).disposed(by: disposeBag)
         
-        searchController.searchBar.rx.text.distinctUntilChanged().map {
-            Reactor.Action.filtering($0, true)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
+        searchController.rx.willPresent
+            .map { .filtering(nil, true) }
+            .debug()
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        searchController.searchBar.rx.cancelButtonClicked.map {
-            Reactor.Action.filtering(nil, false)
-        }.bind(to: reactor.action).disposed(by: disposeBag)
-    
+        searchController.rx.willDismiss
+            .map { .filtering(nil, false) }
+            .debug()
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(MainViewReactor.State.FilterData.self).subscribe(onNext: { [unowned self]
+        searchController.rx.willPresent
+            .flatMapLatest { [unowned self] in
+                return self.searchController.searchBar.rx.text.distinctUntilChanged()
+                    .take(until: self.searchController.rx.willDismiss)
+            }.map { .filtering($0, true) }
+            .bind(to: reactor.action).disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(CellReactor.self).subscribe(onNext: { [unowned self]
             model in
-            let reactor = DetailViewReactor(model: model.filteringData)
-            let vc = FavoriteDetailDataViewController(reactor: reactor)
+            let reactor = DetailViewReactor(model: model.initialState.dataModel)
+            let vc = FavoriteDetailDataViewController(reactor: reactor, isSearching: model.initialState.isSearching)
+            vc.delegate = self
             self.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
-                
+           
+        
+        
         reactor.state.map {
             $0.filterData
         }.bind(to: tableView.rx.items) {
             tablView, row, item in
-            if item.isSearching {
+            let cellReactor = item
+            if cellReactor.initialState.isSearching {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "LocationDataTableViewCell") as? LocationDataTableViewCell
                 else { return LocationDataTableViewCell() }
-                let cellReactor = CellReactor(item.filteringData)
                 cell.selectionStyle = .none
                 cell.delegate = self
                 cell.reactor = cellReactor
@@ -91,7 +100,6 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
             else {
                 guard let cell = tablView.dequeueReusableCell(withIdentifier: "FavoriteDataTableViewCell") as? FavoriteDataTableViewCell
                 else { return FavoriteDataTableViewCell() }
-                let cellReactor = CellReactor(item.filteringData)
                 cell.selectionStyle = .none
                 cell.reactor = cellReactor
                 cell.delegate = self
@@ -101,8 +109,9 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
         
     }
     
-    @objc func changeFavoriteState(_ cityId: String, _ status: Bool) -> [Any] {
-        return [cityId,status]
+    func changeFavoriteState(_ cityId: String, _ status: Bool) {
+        reactor?.action.onNext(.changeFavoriteStatus(cityId, status))
+        
     }
     
     private func initView() {
@@ -130,11 +139,3 @@ class MainViewController: UIViewController,View,FavoriteDelegate {
     }    
 }
 
-extension Reactive where Base: MainViewController {
-    var updateFavoriteDatas: ControlEvent<[Any]> {
-        let source = self.methodInvoked(#selector(Base.changeFavoriteState)).map { data in
-            data
-        }
-        return ControlEvent(events: source)
-    }
-}
