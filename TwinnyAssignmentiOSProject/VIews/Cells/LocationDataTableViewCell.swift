@@ -49,13 +49,14 @@ class LocationDataTableViewCell: UITableViewCell,View {
         self.contentView.addSubview(cityName)
         self.contentView.addSubview(favoriteButton)
         
+        cityName.translatesAutoresizingMaskIntoConstraints = false
         
         cityName.snp.makeConstraints {
             make in
-            make.top.equalToSuperview().offset(10)
-            make.bottom.equalToSuperview().offset(-10)
+            make.top.bottom.equalToSuperview()
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalTo(favoriteButton.snp.leading)
+            make.height.equalTo(44).priority(.high)
         }
         
         favoriteButton.snp.makeConstraints {
@@ -70,11 +71,11 @@ class LocationDataTableViewCell: UITableViewCell,View {
     }
     
     func bind(reactor: CellReactor) {
-        cityName.text = reactor.initialState.dataModel.cityName
-        favoriteButton.favoriteStateStarImageSetting(status: reactor.initialState.dataModel.isFavorite)
+        cityName.text = reactor.initialState.cityName
+        favoriteButton.favoriteStateStarImageSetting(status: reactor.initialState.isFavorite)
         
         favoriteButton.rx.tap.subscribe (onNext: { [weak self] in
-            self?.delegate?.changeFavoriteState(reactor.initialState.dataModel.cityId,true)
+            self?.delegate?.changeFavoriteState(reactor.initialState.cityId,true)
         }).disposed(by: disposeBag)
     }
 }
