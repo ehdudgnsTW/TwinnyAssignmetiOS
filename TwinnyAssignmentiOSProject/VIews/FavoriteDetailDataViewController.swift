@@ -14,8 +14,6 @@ class FavoriteDetailDataViewController: UIViewController,View {
 
     typealias Reactor = DetailViewReactor
     var disposeBag: DisposeBag = DisposeBag()
-    weak var delegate: FavoriteDelegate?
-    private var isSearching: Bool!
     
     private let currentTemperature: UILabel = {
         let label = UILabel()
@@ -78,11 +76,9 @@ class FavoriteDetailDataViewController: UIViewController,View {
         return stackView
     }()
     
-    init(reactor: Reactor, isSearching: Bool) {
+    init(reactor: Reactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
-        print("isSearching: \(isSearching)")
-        self.isSearching = isSearching
     }
     
     required init?(coder: NSCoder) {
@@ -95,10 +91,7 @@ class FavoriteDetailDataViewController: UIViewController,View {
         initView()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        delegate?.isSearching = self.isSearching
-    }
+   
     func bind(reactor: DetailViewReactor) {
         
         currentTemperature.text = reactor.initialState.dataModel.currentTemperature.description
