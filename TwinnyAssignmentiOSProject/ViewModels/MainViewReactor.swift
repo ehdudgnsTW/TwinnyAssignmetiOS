@@ -13,7 +13,7 @@ import UIKit
 class MainViewReactor: Reactor {
     
     private let repository = MockRepository.shared
-    private var searchWord: String = ""
+    private var searchWord: String?
     
     enum Action {
         case filtering(String?, Bool)
@@ -25,12 +25,7 @@ class MainViewReactor: Reactor {
     }
     
     struct State {
-        var filterData: [FilterData] = []
-        
-        struct FilterData {
-            var filteringData: FavoriteDataModel
-            var isSearching: Bool
-        }
+        var filterData: [CellReactor] = []
     }
     
     var initialState: State = State()
@@ -39,42 +34,12 @@ class MainViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .filtering(let text, let isSearching):
-            if isSearching {
-                if let text = text, text != "" {
-                    self.searchWord = text
-                    return repository.getData()
-                        .map { $0.filter { $0.cityName.contains(text) } }
-                        .map { .filteringData($0, true) }
-                }
-                else {
-                    self.searchWord = ""
-                    return repository.getData()
-                        .map { .filteringData($0, true) }
-                }
-            }
-            else {
-                return repository.getData()
-                    .map { $0.filter(\.isFavorite) }
-                    .map { .filteringData($0, false) }
-            }
+            searchWord = text
+           return reloadData(text, isSearching)
         case .changeFavoriteStatus(let id, let isSearching):
-            if isSearching {
-                if self.searchWord != "" {
-                    repository.changeData(id)
-                    return repository.getData()
-                        .map { $0.filter { $0.cityName.contains(self.searchWord) } }
-                        .map { .filteringData($0, true) }
-                }
-                else {
-                    repository.changeData(id)
-                    return repository.getData()
-                        .map { .filteringData($0, true) }
-                }
-            }
             repository.changeData(id)
-            return repository.getData()
-                .map { $0.filter(\.isFavorite) }
-                .map { .filteringData($0, false) }
+            let text = self.searchWord
+            return reloadData(text, isSearching)
         }
     }
     
@@ -83,10 +48,18 @@ class MainViewReactor: Reactor {
         switch mutation {
         case .filteringData(let array, let isSearching):
             state.filterData = array.map {
-                State.FilterData(filteringData: $0, isSearching: isSearching)
+                CellReactor($0, isSearching)
             }
             return state
         }
         
+    }
+}
+
+extension MainViewReactor {
+    func reloadData(_ text:String?,_ isSearching: Bool) -> Observable<Mutation> {
+        return repository.getData()
+            .map { $0.filter { isSearching ? (text?.isEmpty == false ? $0.cityName.contains(text!): true) : $0.isFavorite } }
+             .map { .filteringData($0, isSearching) }
     }
 }
