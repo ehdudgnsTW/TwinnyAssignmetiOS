@@ -45,17 +45,15 @@ class LocationDataTableViewCell: UITableViewCell,View {
     }
     
     private func configureStyle() {
+        
         self.contentView.addSubview(cityName)
         self.contentView.addSubview(favoriteButton)
         
-        self.contentView.snp.makeConstraints {
-            $0.height.equalTo(44)
-            $0.leading.trailing.top.equalToSuperview()
-        }
         
         cityName.snp.makeConstraints {
             make in
-            make.top.bottom.equalTo(contentView.safeAreaLayoutGuide)
+            make.top.equalToSuperview().offset(10)
+            make.bottom.equalToSuperview().offset(-10)
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalTo(favoriteButton.snp.leading)
         }
@@ -65,18 +63,18 @@ class LocationDataTableViewCell: UITableViewCell,View {
             make.top.bottom.equalToSuperview()
             make.trailing.equalToSuperview().offset(-10)
             make.leading.equalTo(cityName.snp.trailing)
-            make.width.equalTo(44)
+            make.width.equalTo(40)
         }
         
         
     }
     
     func bind(reactor: CellReactor) {
-        cityName.text = reactor.initialState.cityName
-        favoriteButton.favoriteStateStarImageSetting(status: reactor.initialState.isFavorite)
+        cityName.text = reactor.initialState.dataModel.cityName
+        favoriteButton.favoriteStateStarImageSetting(status: reactor.initialState.dataModel.isFavorite)
         
         favoriteButton.rx.tap.subscribe (onNext: { [weak self] in
-            self?.delegate?.changeFavoriteState(reactor.initialState.cityId,true)
+            self?.delegate?.changeFavoriteState(reactor.initialState.dataModel.cityId,true)
         }).disposed(by: disposeBag)
     }
 }
