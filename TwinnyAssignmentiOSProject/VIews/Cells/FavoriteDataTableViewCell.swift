@@ -73,11 +73,11 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
     }
     
     func bind(reactor: CellReactor) {
-        cityName.text = reactor.initialState.dataModel.cityName
-        cityTemperature.text = reactor.initialState.dataModel.currentTemperature.description
+        cityName.text = reactor.initialState.cityName
+        cityTemperature.text = reactor.initialState.currentTemperature.description
         
         favoriteButton.rx.tap.subscribe (onNext: { [weak self] in
-            self?.delegate?.changeFavoriteState(reactor.initialState.dataModel.cityId,false)
+            self?.delegate?.changeFavoriteState(reactor.initialState.cityId,false)
         }).disposed(by: disposeBag)
     }
     
