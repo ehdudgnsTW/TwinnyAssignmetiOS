@@ -11,9 +11,14 @@ import ReactorKit
 
 class CellReactor: Reactor {
    typealias Action = NoAction
-    var initialState: FavoriteDataModel
+    var initialState: CellDataModel
     
-    init(_ state: FavoriteDataModel) {
-        self.initialState = state
+    struct CellDataModel {
+        var dataModel: FavoriteDataModel
+        var isSearching: Bool
+    }
+    
+    init(_ state: FavoriteDataModel, _ isSearching: Bool) {
+        self.initialState = CellDataModel(dataModel: state, isSearching: isSearching)
     }
 }
