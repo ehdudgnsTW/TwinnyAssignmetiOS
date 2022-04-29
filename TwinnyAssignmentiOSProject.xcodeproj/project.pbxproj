@@ -16,6 +16,7 @@
 		BC4B25B9280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv in Resources */ = {isa = PBXBuildFile; fileRef = BC4B25B8280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */; };
 		BC4B25BC28082D3700719876 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4B25BB28082D3700719876 /* Repository.swift */; };
 		BC4EA2E32810CE05006D2A64 /* CellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4EA2E22810CE05006D2A64 /* CellReactor.swift */; };
+		BC588AAB2816968000688C24 /* APIResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC588AAA2816968000688C24 /* APIResponseData.swift */; };
 		BC5B7A7227FEAB4300953C7B /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */; };
 		BC5B7A7427FEACEE00953C7B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7327FEACEE00953C7B /* MainViewController.swift */; };
 		BC5B7A7627FEB07500953C7B /* LocationDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */; };
@@ -26,6 +27,7 @@
 		BC5B7A8227FED52D00953C7B /* FavoriteDetailDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A8127FED52D00953C7B /* FavoriteDetailDataViewController.swift */; };
 		BC5B7A8427FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */; };
 		BC703167280F9A5C00847F30 /* DetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC703166280F9A5C00847F30 /* DetailViewReactor.swift */; };
+		BCC68019281A7E2000470CA2 /* WeatherLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC68018281A7E2000470CA2 /* WeatherLabel.swift */; };
 		EA13861F33DB503C68CED2D4 /* Pods_TwinnyAssignmentiOSProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 552A541D8AD0C413320C047F /* Pods_TwinnyAssignmentiOSProject.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +45,7 @@
 		BC4B25B8280828A600719876 /* 기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "기상청41_단기예보-조회서비스_오픈API활용가이드_격자_위경도_20210401_.csv"; sourceTree = "<group>"; };
 		BC4B25BB28082D3700719876 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		BC4EA2E22810CE05006D2A64 /* CellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellReactor.swift; sourceTree = "<group>"; };
+		BC588AAA2816968000688C24 /* APIResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponseData.swift; sourceTree = "<group>"; };
 		BC5B7A7127FEAB4300953C7B /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		BC5B7A7327FEACEE00953C7B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		BC5B7A7527FEB07500953C7B /* LocationDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataTableViewCell.swift; sourceTree = "<group>"; };
@@ -53,6 +56,7 @@
 		BC5B7A8127FED52D00953C7B /* FavoriteDetailDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDetailDataViewController.swift; sourceTree = "<group>"; };
 		BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Context+Font+Weight+Color.swift"; sourceTree = "<group>"; };
 		BC703166280F9A5C00847F30 /* DetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewReactor.swift; sourceTree = "<group>"; };
+		BCC68018281A7E2000470CA2 /* WeatherLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherLabel.swift; sourceTree = "<group>"; };
 		DCD1195094B63FE2100C79FA /* Pods-TwinnyAssignmentiOSProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwinnyAssignmentiOSProject.debug.xcconfig"; path = "Target Support Files/Pods-TwinnyAssignmentiOSProject/Pods-TwinnyAssignmentiOSProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				BC5B7A7927FEBBDB00953C7B /* FavoriteDataModel.swift */,
+				BC588AAA2816968000688C24 /* APIResponseData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 				BC5B7A7D27FEC5B900953C7B /* SizeStyle.swift */,
 				BC5B7A8327FED9DF00953C7B /* Label+Context+Font+Weight+Color.swift */,
 				BC21DDB3280D5E6500EB7ADD /* ExtensionReactorViewController.swift */,
+				BCC68018281A7E2000470CA2 /* WeatherLabel.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -293,12 +299,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC588AAB2816968000688C24 /* APIResponseData.swift in Sources */,
 				BC5B7A8027FED46400953C7B /* MainViewReactor.swift in Sources */,
 				BC703167280F9A5C00847F30 /* DetailViewReactor.swift in Sources */,
 				BC5B7A7A27FEBBDB00953C7B /* FavoriteDataModel.swift in Sources */,
 				56DC3E2F27B2BAC00095E297 /* AppDelegate.swift in Sources */,
 				BC4B25BC28082D3700719876 /* Repository.swift in Sources */,
 				BC5B7A7C27FEC53800953C7B /* FavoriteDataTableViewCell.swift in Sources */,
+				BCC68019281A7E2000470CA2 /* WeatherLabel.swift in Sources */,
 				56DC3E3127B2BAC00095E297 /* SceneDelegate.swift in Sources */,
 				56DC3E3927B2BAC00095E297 /* TwinnyAssignmentiOSProject.xcdatamodeld in Sources */,
 				BC5B7A8227FED52D00953C7B /* FavoriteDetailDataViewController.swift in Sources */,
