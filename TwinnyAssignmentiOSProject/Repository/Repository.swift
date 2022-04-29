@@ -11,21 +11,15 @@ import Alamofire
 
 protocol RepositoryProtocol {
     static var shared: RepositoryProtocol { get }
-    var publishSubject: PublishSubject<[String : Float]> { get }
     func getData() -> Observable<[FavoriteDataModel]>
-    var detailDataSubject: PublishSubject<FavoriteDataModel> { get }
     func changeData(_ cityId: String)
-    func upDateDetailData(model: FavoriteDataModel)
+    func upDateDetailData(model: FavoriteDataModel) -> Observable<FavoriteDataModel>
 }
 
 final class Repository: RepositoryProtocol {
     
     static var shared: RepositoryProtocol = Repository()
     private var totalData: [FavoriteDataModel] = []
-    let publishSubject = PublishSubject<[String:Float]>()
-    let detailDataSubject = PublishSubject<FavoriteDataModel>()
-    private var disposeBag = DisposeBag()
-    private var result: [String:Float] = [:]
     
     private init() {
         let currentTemperature: [Float] = [12,16,18,10,14,13,11,20]
@@ -47,20 +41,21 @@ final class Repository: RepositoryProtocol {
                     let dataEncoded = String(data: data, encoding: .utf8)
                     if let dataArr = dataEncoded?.components(separatedBy: "\n").map({ $0.components(separatedBy: "\",\"")}) {
                         for cityData in dataArr {
-                            if cityData.count > 1, cityData[0].contains("kor") {
-                                if cityData[3] != "", cityData[4] != "" {
-                                    let cityName = "\(cityData[2]) \(cityData[3]) \(cityData[4])"
-                                    if let x = Int(cityData[5]),let y = Int(cityData[6]) {
-                                        totalData.append(FavoriteDataModel(currentTemperature: currentTemperature[Int.random(in: 0..<currentTemperature.count)],
-                                                                 maxTemperature: maxTemperature[Int.random(in: 0..<maxTemperature.count)],
-                                                                 minTemperature: minTemperature[Int.random(in: 0..<minTemperature.count)] ,
-                                                                 cityId: cityData[1],
-                                                                 isFavorite: false,
-                                                                 cityName: cityName,
-                                                                 locationCoordinate: CGPoint(x: x, y: y),
-                                                                           skyState: "맑음"))
-                                    }
-
+                            let isValid = cityData.count > 1 && cityData[0].contains("kor")
+                            let isNotDetailAddress = cityData.count >= 5 && cityData[3] != "" && cityData[4] != ""
+                            if isValid, isNotDetailAddress {
+                                let cityName = "\(cityData[2]) \(cityData[3]) \(cityData[4])"
+                                if let x = Int(cityData[5]), let y = Int(cityData[6]) {
+                                    totalData.append(.init(
+                                        currentTemperature: currentTemperature[Int.random(in: 0..<currentTemperature.count)],
+                                        maxTemperature: maxTemperature[Int.random(in: 0..<maxTemperature.count)],
+                                        minTemperature: minTemperature[Int.random(in: 0..<minTemperature.count)] ,
+                                        cityId: cityData[1],
+                                        isFavorite: false,
+                                        cityName: cityName,
+                                        locationCoordinate: CGPoint(x: x, y: y),
+                                        skyState: "맑음")
+                                    )
                                 }
                             }
                         }
@@ -77,45 +72,55 @@ final class Repository: RepositoryProtocol {
         }
     }
     
-    func getWeatherData(model: FavoriteDataModel, baseTime: String, category: String, pageNo: String, numOfRows: String) {
+    func getWeatherData(model: FavoriteDataModel, baseTime: String, categoryList: [String], pageNo: String, numOfRows: String) -> Observable<[String: Float]> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         
         let currentDate = dateFormatter.string(from: Date())
         
         let parameters = ["numOfRows": numOfRows,"pageNo": pageNo,"dataType":"JSON","base_date": currentDate,"base_time": baseTime,"nx": Int(model.locationCoordinate.x).description,"ny": Int(model.locationCoordinate.y).description]
-        executeAPI(parameters,category)
+        return executeAPI(parameters, categoryList).retry()
     }
     
-    func executeAPI(_ parameters: Parameters,_ currentTMP: String) {
-        let decoder = JSONDecoder()
-        let url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=F%2Fp%2BG6%2BXHFejoIHeqNZqluWcWODVZgvMeciUutkASGGcECIWgl113GK4EnrMZGsMEcPVon5FqN9%2B%2Fi%2BNituvDg%3D%3D"
-        
-        AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil, interceptor: nil, requestModifier: nil).validate().response(completionHandler: {
-            data in
-            switch data.result{
-            case .success(let data):
-                if let data = data {
-                    if let decodingData = try? decoder.decode(ResponseData.self, from: data) {
-                        if decodingData.response.header.resultCode == "00" {
-                            let tmp = decodingData.response.body?.items.item.filter{
-                                $0.category == currentTMP
+    func executeAPI(_ parameters: Parameters,_ currentTMP: [String]) -> Observable<[String: Float]> {
+        return .create { observer in
+            
+            let decoder = JSONDecoder()
+            let url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=F%2Fp%2BG6%2BXHFejoIHeqNZqluWcWODVZgvMeciUutkASGGcECIWgl113GK4EnrMZGsMEcPVon5FqN9%2B%2Fi%2BNituvDg%3D%3D"
+            
+            var result = [String: Float]()
+            
+            AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil, interceptor: nil, requestModifier: nil).validate().response(completionHandler: {
+                data in
+                switch data.result{
+                case .success(let data):
+                    if let data = data {
+                        if let decodingData = try? decoder.decode(ResponseData.self, from: data) {
+                            let response = decodingData.response
+                            if response.header.resultCode == "00",
+                               let items = response.body?.items.item {
+                                currentTMP.forEach { category in
+                                    guard let item = items.first(where: { $0.category == category }) else { return }
+                                    result[category] = Float(item.fcstValue)
+                                }
                             }
-                            self.result[currentTMP] = Float(tmp![0].fcstValue)
-                            self.publishSubject.onNext(self.result)
-                        }
-                        else {
-                            print(decodingData.response.header.resultMsg)
+                            else {
+                                print(decodingData.response.header.resultMsg)
+                            }
                         }
                     }
+                case .failure(let error):
+                    observer.onError(error)
                 }
-            case .failure(let error):
-                print(error)
-                self.executeAPI(parameters, currentTMP)
-            }
-        })
-        
-        
+                let isCompleted = currentTMP.map { result[$0] != nil }.reduce(true, { $0 && $1 })
+                if isCompleted {
+                    observer.onNext(result)
+                    observer.onCompleted()
+                }
+            })
+            
+            return Disposables.create()
+        }
     }
     
     private func encodingData() {
@@ -132,7 +137,7 @@ final class Repository: RepositoryProtocol {
         }
     }
     
-    func upDateDetailData(model: FavoriteDataModel) {
+    func upDateDetailData(model: FavoriteDataModel) -> Observable<FavoriteDataModel> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH00"
         let currentTime = dateFormatter.string(from: Date())
@@ -145,43 +150,39 @@ final class Repository: RepositoryProtocol {
             }
         }
         let pageNo = (Int(currentTime)!/100 - Int(baseTime)!/100).description
-        getWeatherData(model: model, baseTime: baseTime, category: "PTY", pageNo: pageNo, numOfRows: "12")
-        getWeatherData(model: model, baseTime: baseTime, category: "SKY", pageNo: pageNo, numOfRows: "12")
-        getWeatherData(model: model, baseTime: baseTime, category: "TMP", pageNo: pageNo, numOfRows: "12")
-        getWeatherData(model: model, baseTime: "0200", category: "TMX", pageNo: "1", numOfRows: "160")
-        getWeatherData(model: model, baseTime: "0200", category: "TMN", pageNo: "1", numOfRows: "160")
-        publishSubject.subscribe {
-            if let result = $0.element {
-                if result.count == 5 {
-                    for i in 0..<self.totalData.count {
-                        if model.cityId == self.totalData[i].cityId {
-                            self.totalData[i].currentTemperature = result["TMP"] ?? self.totalData[i].currentTemperature
-                            self.totalData[i].maxTemperature = result["TMX"] ?? self.totalData[i].maxTemperature
-                            self.totalData[i].minTemperature = result["TMN"] ?? self.totalData[i].minTemperature
-                            switch result["PTY"] {
+        
+        return Observable.zip(
+            getWeatherData(model: model, baseTime: baseTime, categoryList: ["PTY", "SKY", "TMP"], pageNo: pageNo, numOfRows: "12"),
+            getWeatherData(model: model, baseTime: "0200", categoryList: ["TMX", "TMN"], pageNo: "1", numOfRows: "160")
+        ).map { $0.merging($1, uniquingKeysWith: { $1 }) }
+            .do(onNext: {
+                let result = $0
+                for i in 0..<self.totalData.count {
+                    if model.cityId == self.totalData[i].cityId {
+                        self.totalData[i].currentTemperature = result["TMP"] ?? self.totalData[i].currentTemperature
+                        self.totalData[i].maxTemperature = result["TMX"] ?? self.totalData[i].maxTemperature
+                        self.totalData[i].minTemperature = result["TMN"] ?? self.totalData[i].minTemperature
+                        switch result["PTY"] {
+                        case 0:
+                            switch result["SKY"] {
                             case 0:
-                                switch result["SKY"] {
-                                case 0:
-                                    self.totalData[i].skyState = "맑음"
-                                case 3:
-                                    self.totalData[i].skyState = "구름조금"
-                                default:
-                                    self.totalData[i].skyState = "흐림"
-                                }
+                                self.totalData[i].skyState = "맑음"
                             case 3:
-                                self.totalData[i].skyState = "눈"
+                                self.totalData[i].skyState = "구름조금"
                             default:
-                                self.totalData[i].skyState = "비"
+                                self.totalData[i].skyState = "흐림"
                             }
-                            self.detailDataSubject.onNext(self.totalData[i])
-                            self.disposeBag = DisposeBag()
+                        case 3:
+                            self.totalData[i].skyState = "눈"
+                        default:
+                            self.totalData[i].skyState = "비"
                         }
                     }
-                    self.encodingData()
                 }
+                self.encodingData()
+            }).map { _ in
+                return self.totalData.first { $0.cityId == model.cityId } ?? model
             }
-        }.disposed(by: disposeBag)
-       
     }
     
     func getData() -> Observable<[FavoriteDataModel]> {
@@ -279,7 +280,8 @@ final class MockRepository: RepositoryProtocol {
             }
         }
     }
-    func upDateDetailData(model: FavoriteDataModel) {
+    func upDateDetailData(model: FavoriteDataModel) -> Observable<FavoriteDataModel> {
+        return .empty()
     }
 }
         
