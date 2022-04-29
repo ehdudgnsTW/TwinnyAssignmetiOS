@@ -27,4 +27,21 @@ extension UIButton {
     }
 }
 
+extension UIImageView {
+    func setSkyImage(state: String, _ width: CGFloat, _ height: CGFloat) {
+        switch state {
+        case "흐림":
+            self.image = SizeStyle.resizeImage(image: UIImage(named: "cloudy"), width, height)
+        case "구름조금":
+            self.image = SizeStyle.resizeImage(image: UIImage(named: "little_cloud"), width, height)
+        case "비":
+            self.image = SizeStyle.resizeImage(image: UIImage(named: "rainy"), width, height)
+        case "눈":
+            self.image = SizeStyle.resizeImage(image: UIImage(named: "snow"), width, height)
+        default:
+            self.image = SizeStyle.resizeImage(image: UIImage(named: "sunny"), width, height)
+        }
+    }
+}
+
 
