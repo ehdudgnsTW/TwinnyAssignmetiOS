@@ -130,7 +130,7 @@ class FavoriteDetailDataViewController: UIViewController,View {
         
         reactor.state.bind(onNext: {
             self.view.hideToast()
-            self.view.makeToast($0.message)
+            self.view.makeToast($0.message, point: CGPoint(x: self.view.frame.midX, y: self.view.frame.maxY-40), title: nil, image: nil,completion: nil)
         }).disposed(by: disposeBag)
     }
     
