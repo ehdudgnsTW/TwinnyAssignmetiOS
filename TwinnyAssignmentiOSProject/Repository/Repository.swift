@@ -117,6 +117,7 @@ final class Repository: RepositoryProtocol {
         
         
     }
+    
     private func encodingData() {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
@@ -261,7 +262,6 @@ final class MockRepository: RepositoryProtocol {
     
     func changeData(_ cityId: String) {
         let encoder = JSONEncoder()
-        var totalDataIndex: Int = -1
         for i in 0..<totalData.count {
             if totalData[i].cityId == cityId {
                 totalData[i].isFavorite.toggle()
