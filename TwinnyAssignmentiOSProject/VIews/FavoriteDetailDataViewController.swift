@@ -9,6 +9,7 @@ import UIKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import Toast_Swift
 
 class FavoriteDetailDataViewController: UIViewController,View {
 
@@ -76,6 +77,15 @@ class FavoriteDetailDataViewController: UIViewController,View {
         return stackView
     }()
     
+    private let weatherConditionImage: UIImageView = {
+        let image = UIImageView()
+        return image
+    }()
+    private let weatherConditionLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
     init(reactor: Reactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
@@ -99,15 +109,29 @@ class FavoriteDetailDataViewController: UIViewController,View {
         maxTemperature.text = reactor.initialState.dataModel.maxTemperature.description
         minTemperature.text = reactor.initialState.dataModel.minTemperature.description
         
+        self.rx.viewWillAppear.map {
+            Reactor.Action.updateData
+        }.bind(to: reactor.action).disposed(by: disposeBag)
+        
         favoriteButton.rx.tap.map {
             Reactor.Action.changeFavorite
         }.bind(to:reactor.action).disposed(by: disposeBag)
-        
-    
-        
-        reactor.state.map { $0.dataModel.isFavorite }.share()
-            .bind(onNext: { self.favoriteButton.favoriteStateStarImageSetting(status: $0) })
+            
+        reactor.state.map{ $0.dataModel}
+            .bind(onNext: {
+                self.currentTemperature.text = $0.currentTemperature.description
+                self.maxTemperature.text = $0.maxTemperature.description
+                self.minTemperature.text = $0.minTemperature.description
+                self.weatherConditionImage.setSkyImage(state: $0.skyState, 100, 100)
+                self.weatherConditionLabel.setWeatherStateText(state: $0.skyState)
+                self.favoriteButton.favoriteStateStarImageSetting(status: $0.isFavorite)
+            })
             .disposed(by: disposeBag)
+        
+        reactor.state.bind(onNext: {
+            self.view.hideToast()
+            self.view.makeToast($0.message)
+        }).disposed(by: disposeBag)
     }
     
     private func initView() {
@@ -120,7 +144,7 @@ class FavoriteDetailDataViewController: UIViewController,View {
             stackView.addArrangedSubview($0)
         }
         
-        [currentTemperature,stackView,cityName,divideView,favoriteButton].forEach {
+        [currentTemperature,stackView,cityName,divideView,favoriteButton,weatherConditionImage,weatherConditionLabel].forEach {
             self.view.addSubview($0)
         }
         
@@ -137,6 +161,7 @@ class FavoriteDetailDataViewController: UIViewController,View {
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(74)
             make.bottom.equalTo(cityName.snp.top).inset(-20)
+            make.height.equalTo(48).priority(.high)
         }
         
         cityName.snp.makeConstraints {
@@ -145,6 +170,7 @@ class FavoriteDetailDataViewController: UIViewController,View {
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.top.equalTo(currentTemperature.snp.bottom).offset(20)
             make.bottom.equalTo(stackView.snp.top).offset(-47)
+            make.height.equalTo(24)
         }
         
         stackView.snp.makeConstraints {
@@ -153,6 +179,7 @@ class FavoriteDetailDataViewController: UIViewController,View {
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.top.equalTo(cityName.snp.bottom).offset(47)
             make.bottom.equalTo(divideView.snp.top).offset(-83)
+            make.height.equalTo(24)
         }
         
         divideView.snp.makeConstraints {
@@ -161,6 +188,20 @@ class FavoriteDetailDataViewController: UIViewController,View {
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.height.equalTo(3)
             make.top.equalTo(stackView.snp.bottom).offset(83)
+        }
+        
+        weatherConditionImage.snp.makeConstraints {
+            make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(divideView.snp.bottom).offset(20)
+        }
+        
+        weatherConditionLabel.snp.makeConstraints {
+            make in
+            make.top.equalTo(weatherConditionImage.snp.bottom).offset(30)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(24)
+            
         }
     }
     
