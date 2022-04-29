@@ -41,10 +41,8 @@ class DetailViewReactor: Reactor {
             repository.changeData(initialState.dataModel.cityId)
             return .just(.changeFavoriteState)
         case .updateData:
-            repository.upDateDetailData(model: initialState.dataModel)
-            return repository.detailDataSubject.map {
-                DetailViewReactor.Mutation.getmodelData($0,"업데이트 완료!!")
-            }
+            return repository.upDateDetailData(model: initialState.dataModel)
+                .map { .getmodelData($0, "업데이트 완료!!") }
         }
     }
     
