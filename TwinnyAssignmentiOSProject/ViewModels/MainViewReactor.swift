@@ -12,7 +12,7 @@ import UIKit
 
 class MainViewReactor: Reactor {
     
-    private let repository = MockRepository.shared
+    private let repository = Repository.shared
     private var searchWord: String?
     
     enum Action {
