@@ -17,6 +17,7 @@ class FavoriteDataTableViewCell: UITableViewCell,View {
     private let cityName: UILabel = {
         let label = UILabel()
         label.setTextFontWeightColor(nil, font: 20, weight: .medium, nil)
+        label.textAlignment = .right
         return label
     }()
     

@@ -16,4 +16,5 @@ struct FavoriteDataModel: Codable {
     var isFavorite: Bool
     let cityName: String
     let locationCoordinate: CGPoint
+    var skyState: String
 }

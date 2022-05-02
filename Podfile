@@ -11,6 +11,7 @@ target 'TwinnyAssignmentiOSProject' do
   pod 'Then'
   pod 'SDWebImage'
   pod 'Alamofire', '~> 5.5'
+  pod 'Toast-Swift', '~> 5.0.1'
 
   # Pods for TwinnyAssignmentiOSProject
 
